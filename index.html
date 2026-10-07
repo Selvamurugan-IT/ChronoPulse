@@ -4,21 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date & Age Calculator — ChronoPulse</title>
+    <title>ChronoPulse 2.0 — Ultimate Time, Profile & Habit Tracker</title>
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap"
         rel="stylesheet">
+
+    <!-- Canvas Confetti, Chart.js & Html2Canvas -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
-    <div class="app-container">
+    <div class="app-container" id="captureArea">
         <!-- Header -->
         <header class="app-header">
             <div class="logo-area">
                 <div class="logo-icon-bg">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -28,29 +32,29 @@
                 </div>
                 <div>
                     <div class="title-row">
-                        <h1 class="app-title">Date & Age Calculator</h1>
-                        <span class="badge-pill">Auto-Syncing</span>
+                        <h1 class="app-title">ChronoPulse 2.0</h1>
+                        <span class="badge-pill">v2.0 Active</span>
                     </div>
-                    <p class="app-subtitle">Calculates real-time elapsed durations, remaining countdowns, & exact ages
-                    </p>
+                    <p class="app-subtitle">Ultimate Time, Profile & Streak Engine</p>
                 </div>
             </div>
             <div class="header-actions">
-                <button id="audioBtn" class="pill-btn"><span id="audioIcon">🔊</span> <span id="audioText">Audio
-                        On</span></button>
-                <button id="shareBtn" class="pill-btn"><span class="icon">🔗</span> Share</button>
+                <button id="tickAudioToggleBtn" class="pill-btn highlight-btn"><span id="audioIcon">🔊</span> <span
+                        id="audioText">Tick Sound ON</span></button>
+                <button id="shareBtn" class="pill-btn"><span class="icon">📸</span> Share / Screenshot</button>
             </div>
         </header>
 
         <!-- Navigation Tabs -->
         <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="countdown">⏱️ Countdown</button>
-            <button class="tab-btn" data-tab="difference">⇄ Date Difference</button>
-            <button class="tab-btn" data-tab="addsub">Add / Subtract</button>
-            <button class="tab-btn" data-tab="age">🎂 Age Calculator</button>
+            <button class="tab-btn active" data-tab="countdown">⏱️ Countdown Engine</button>
+            <button class="tab-btn" data-tab="profile">👤 User Profile</button>
+            <button class="tab-btn" data-tab="habits">🔥 Habit & Task Dashboard</button>
+            <button class="tab-btn" data-tab="life">📊 Life Progress</button>
+            <button class="tab-btn" data-tab="difference">⇄ Date Diff</button>
         </nav>
 
-        <!-- TAB 1: COUNTDOWN -->
+        <!-- TAB 1: COUNTDOWN & METRICS ENGINE -->
         <section id="countdown" class="tab-content active">
             <div class="presets-card">
                 <span class="preset-label">⚡ TARGET PRESETS</span>
@@ -78,8 +82,9 @@
                 </div>
             </div>
 
+            <!-- Live Ticker Box -->
             <div class="hero-ticker-box">
-                <div class="ticker-badge">DYNAMIC REAL-TIME TICKER</div>
+                <div class="ticker-badge-center"><span class="badge-pill-glow">DYNAMIC REAL-TIME TICKER</span></div>
                 <h2 class="hero-title">Counting down to <span id="heroTargetName" class="highlight-text">March 3,
                         2027</span></h2>
 
@@ -103,31 +108,126 @@
                 </div>
             </div>
 
+            <!-- 4 Metric Cards -->
             <div class="metrics-grid-4">
                 <div class="metric-card">
                     <label>TOTAL DAYS REMAINING</label>
-                    <h3 id="metricDays">0</h3>
+                    <h3 id="mTotalDays">0</h3>
                     <p>24-hour day units</p>
                 </div>
                 <div class="metric-card">
                     <label>TOTAL WEEKS</label>
-                    <h3 id="metricWeeks">0.0</h3>
+                    <h3 id="mTotalWeeks">0.0</h3>
                     <p>weeks remaining</p>
                 </div>
                 <div class="metric-card">
                     <label>TOTAL HOURS</label>
-                    <h3 id="metricHours">0</h3>
+                    <h3 id="mTotalHours">0</h3>
                     <p>hours of time left</p>
                 </div>
                 <div class="metric-card">
                     <label>TOTAL MINUTES</label>
-                    <h3 id="metricMins">0</h3>
+                    <h3 id="mTotalMinutes">0</h3>
                     <p>minutes left</p>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 2: DATE DIFFERENCE -->
+        <!-- TAB 2: USER PROFILE -->
+        <section id="profile" class="tab-content">
+            <div class="profile-hero-card">
+                <h2 class="hero-title">User Profile & Lifespan 👋</h2>
+                <div class="inputs-grid">
+                    <div class="input-card"><label>YOUR FULL NAME</label><input type="text" id="userNameInput"
+                            placeholder="Enter your name"></div>
+                    <div class="input-card"><label>DATE OF BIRTH (DOB)</label><input type="date" id="userDobInput">
+                    </div>
+                </div>
+                <button id="saveProfileBtn" class="action-btn">💾 Save Profile & Calculate Exact Age</button>
+
+                <div class="metrics-grid-4 margin-top-1">
+                    <div class="metric-card"><label>EXACT AGE</label>
+                        <h3 id="profileAgeText">-- Yrs</h3>
+                    </div>
+                    <div class="metric-card"><label>NEXT BIRTHDAY</label>
+                        <h3 id="profileNextBdayDays">-- Days</h3>
+                    </div>
+                    <div class="metric-card"><label>TOTAL DAYS LIVED</label>
+                        <h3 id="profileDaysLived">--</h3>
+                    </div>
+                    <div class="metric-card"><label>TOTAL HOURS LIVED</label>
+                        <h3 id="profileHoursLived">--</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="events-section">
+                <h3>🎉 Personal Important Countdown Events</h3>
+                <div class="inputs-grid-3">
+                    <input type="text" id="eventTitle" placeholder="Event Name">
+                    <input type="date" id="eventDate">
+                    <button id="addEventBtn" class="action-btn-secondary">+ Add Event</button>
+                </div>
+                <div id="eventsContainer" class="events-list"></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: DEDICATED HABIT & TASK DASHBOARD -->
+        <section id="habits" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>➕ Add Goal & Tasks</h3>
+                    <div class="input-group">
+                        <label>GOAL NAME</label>
+                        <input type="text" id="newGoalTitle" placeholder="e.g. Daily Fitness Routine">
+                    </div>
+                    <div class="input-group">
+                        <label>TASKS (Comma Separated for Multiple Tasks)</label>
+                        <input type="text" id="newGoalTasks" placeholder="e.g. Pushups, 2L Water, Read 10 Pages">
+                    </div>
+                    <button id="addGoalBtn" class="action-btn">+ Save Goal & Tasks</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>📊 Habit Streak Analytics Chart</h3>
+                    <canvas id="streakChart" height="160"></canvas>
+                </div>
+            </div>
+
+            <div id="goalsContainer" class="goals-container"></div>
+        </section>
+
+        <!-- TAB 4: LIFE PROGRESS VISUALIZER -->
+        <section id="life" class="tab-content">
+            <div class="hero-ticker-box">
+                <h3>📊 Real-Time Life & Time Progress</h3>
+                <div class="life-progress-group">
+                    <div class="life-bar-item">
+                        <div class="progress-labels"><span>DAY PROGRESS (Hours Passed)</span><span
+                                id="dayProgressPct">0%</span></div>
+                        <div class="progress-track">
+                            <div id="dayProgressBar" class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="life-bar-item">
+                        <div class="progress-labels"><span>MONTH PROGRESS (Days Passed)</span><span
+                                id="monthProgressPct">0%</span></div>
+                        <div class="progress-track">
+                            <div id="monthProgressBar" class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="life-bar-item">
+                        <div class="progress-labels"><span>YEAR PROGRESS (Months Passed)</span><span
+                                id="yearProgressPct">0%</span></div>
+                        <div class="progress-track">
+                            <div id="yearProgressBar" class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: DATE DIFFERENCE -->
         <section id="difference" class="tab-content">
             <div class="inputs-grid">
                 <div class="input-card"><label>START DATE</label><input type="date" id="diffStart"></div>
@@ -138,42 +238,25 @@
             </div>
         </section>
 
-        <!-- TAB 3: ADD / SUBTRACT -->
-        <section id="addsub" class="tab-content">
-            <div class="inputs-grid-3">
-                <div class="input-card"><label>START DATE</label><input type="date" id="asStart"></div>
-                <div class="input-card">
-                    <label>OPERATION</label>
-                    <select id="asOp">
-                        <option value="add">Add (+)</option>
-                        <option value="sub">Subtract (-)</option>
-                    </select>
-                </div>
-                <div class="input-card"><label>DAYS</label><input type="number" id="asDaysVal" value="30"></div>
-            </div>
-            <div class="hero-ticker-box text-center">
-                <h2 id="asResultText" class="hero-title highlight-text">-</h2>
-            </div>
-        </section>
-
-        <!-- TAB 4: AGE CALCULATOR -->
-        <section id="age" class="tab-content">
-            <div class="inputs-grid">
-                <div class="input-card"><label>DATE OF BIRTH</label><input type="date" id="ageDob" value="2006-03-03">
-                </div>
-                <div class="input-card"><label>AS OF DATE</label><input type="date" id="ageAsOf"></div>
-            </div>
-            <div class="hero-ticker-box text-center">
-                <h2 id="ageResultText" class="hero-title highlight-text">Calculating...</h2>
-            </div>
-        </section>
-
         <!-- Footer -->
         <footer class="app-footer">
             <p>Runs 100% in your browser. Start date and "As of" date auto-sync to your live system clock every second.
             </p>
             <p class="live-clock">Live Device Time: <span id="liveClockText">--</span></p>
         </footer>
+    </div>
+
+    <!-- PER-TASK 🔥 STREAK CALENDAR MODAL -->
+    <div id="calendarModal" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTaskTitle">🔥 Task Streak Calendar</h3>
+                <button id="closeModalBtn" class="close-btn">&times;</button>
+            </div>
+            <div class="calendar-subtext">Clicking a task streak displays the calendar below. Days marked with 🔥
+                indicate completed task check-ins!</div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
