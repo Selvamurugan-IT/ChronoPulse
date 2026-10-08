@@ -1,182 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date & Age Calculator — ChronoPulse</title>
-    <link rel="stylesheet" href="style.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap"
-        rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChronoPulse</title>
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%23ff7a45' stroke-width='9'/%3E%3Cpath d='M50 24v28l16 10' fill='none' stroke='%23ff7a45' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script defer src="script.js"></script>
 </head>
-
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="logo-area">
-                <div class="logo-icon-bg">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                </div>
-                <div>
-                    <div class="title-row">
-                        <h1 class="app-title">Date & Age Calculator</h1>
-                        <span class="badge-pill">Auto-Syncing</span>
-                    </div>
-                    <p class="app-subtitle">Calculates real-time elapsed durations, remaining countdowns, & exact ages
-                    </p>
-                </div>
-            </div>
-            <div class="header-actions">
-                <button id="audioBtn" class="pill-btn"><span id="audioIcon">🔊</span> <span id="audioText">Audio
-                        On</span></button>
-                <button id="shareBtn" class="pill-btn"><span class="icon">🔗</span> Share</button>
-            </div>
-        </header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4zM22 9l-6 6M16 9l6 6"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4zM16 9v6M20 9v6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+</svg>
 
-        <!-- Navigation Tabs -->
-        <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="countdown">⏱️ Countdown</button>
-            <button class="tab-btn" data-tab="difference">⇄ Date Difference</button>
-            <button class="tab-btn" data-tab="addsub">Add / Subtract</button>
-            <button class="tab-btn" data-tab="age">🎂 Age Calculator</button>
-        </nav>
-
-        <!-- TAB 1: COUNTDOWN -->
-        <section id="countdown" class="tab-content active">
-            <div class="presets-card">
-                <span class="preset-label">⚡ TARGET PRESETS</span>
-                <div class="presets-group">
-                    <button class="chip-btn active" data-target="2027-03-03T00:00">🎯 March 3, 2027</button>
-                    <button class="chip-btn" data-target="2027-01-01T00:00">🎆 New Year 2027</button>
-                    <button class="chip-btn" data-target="2026-12-25T00:00">🎄 Christmas 2026</button>
-                </div>
-            </div>
-
-            <div class="inputs-grid">
-                <div class="input-card">
-                    <div class="card-header-row">
-                        <label>CURRENT / BASE DATE</label>
-                        <span class="badge-pill-green">⇆ AUTO-SYNCED</span>
-                    </div>
-                    <input type="datetime-local" id="baseDateInput">
-                </div>
-                <div class="input-card active-border">
-                    <div class="card-header-row">
-                        <label>TARGET / END DATE</label>
-                        <span id="targetDateSubtitle" class="date-sub-label">march 3, 2027</span>
-                    </div>
-                    <input type="datetime-local" id="targetDateInput" value="2027-03-03T00:00">
-                </div>
-            </div>
-
-            <div class="hero-ticker-box">
-                <div class="ticker-badge">DYNAMIC REAL-TIME TICKER</div>
-                <h2 class="hero-title">Counting down to <span id="heroTargetName" class="highlight-text">March 3,
-                        2027</span></h2>
-
-                <div class="counter-grid-6">
-                    <div class="count-box"><span id="cdMonths">00</span><label>MONTHS</label></div>
-                    <div class="count-box"><span id="cdDays">00</span><label>DAYS</label></div>
-                    <div class="count-box"><span id="cdHours">00</span><label>HOURS</label></div>
-                    <div class="count-box"><span id="cdMins">00</span><label>MINUTES</label></div>
-                    <div class="count-box"><span id="cdSecs">00</span><label>SECONDS</label></div>
-                    <div class="count-box"><span id="cdMs">000</span><label>MILLISEC</label></div>
-                </div>
-
-                <div class="progress-container">
-                    <div class="progress-labels">
-                        <span id="progressPercent">0.0% Completed</span>
-                        <span id="progressDaysRemaining">0 days remaining</span>
-                    </div>
-                    <div class="progress-track">
-                        <div id="progressBarFill" class="progress-fill"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="metrics-grid-4">
-                <div class="metric-card">
-                    <label>TOTAL DAYS REMAINING</label>
-                    <h3 id="metricDays">0</h3>
-                    <p>24-hour day units</p>
-                </div>
-                <div class="metric-card">
-                    <label>TOTAL WEEKS</label>
-                    <h3 id="metricWeeks">0.0</h3>
-                    <p>weeks remaining</p>
-                </div>
-                <div class="metric-card">
-                    <label>TOTAL HOURS</label>
-                    <h3 id="metricHours">0</h3>
-                    <p>hours of time left</p>
-                </div>
-                <div class="metric-card">
-                    <label>TOTAL MINUTES</label>
-                    <h3 id="metricMins">0</h3>
-                    <p>minutes left</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: DATE DIFFERENCE -->
-        <section id="difference" class="tab-content">
-            <div class="inputs-grid">
-                <div class="input-card"><label>START DATE</label><input type="date" id="diffStart"></div>
-                <div class="input-card"><label>END DATE</label><input type="date" id="diffEnd" value="2027-03-03"></div>
-            </div>
-            <div class="hero-ticker-box text-center">
-                <h2 id="diffResultText" class="hero-title highlight-text">0 Total Days</h2>
-            </div>
-        </section>
-
-        <!-- TAB 3: ADD / SUBTRACT -->
-        <section id="addsub" class="tab-content">
-            <div class="inputs-grid-3">
-                <div class="input-card"><label>START DATE</label><input type="date" id="asStart"></div>
-                <div class="input-card">
-                    <label>OPERATION</label>
-                    <select id="asOp">
-                        <option value="add">Add (+)</option>
-                        <option value="sub">Subtract (-)</option>
-                    </select>
-                </div>
-                <div class="input-card"><label>DAYS</label><input type="number" id="asDaysVal" value="30"></div>
-            </div>
-            <div class="hero-ticker-box text-center">
-                <h2 id="asResultText" class="hero-title highlight-text">-</h2>
-            </div>
-        </section>
-
-        <!-- TAB 4: AGE CALCULATOR -->
-        <section id="age" class="tab-content">
-            <div class="inputs-grid">
-                <div class="input-card"><label>DATE OF BIRTH</label><input type="date" id="ageDob" value="2006-03-03">
-                </div>
-                <div class="input-card"><label>AS OF DATE</label><input type="date" id="ageAsOf"></div>
-            </div>
-            <div class="hero-ticker-box text-center">
-                <h2 id="ageResultText" class="hero-title highlight-text">Calculating...</h2>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="app-footer">
-            <p>Runs 100% in your browser. Start date and "As of" date auto-sync to your live system clock every second.
-            </p>
-            <p class="live-clock">Live Device Time: <span id="liveClockText">--</span></p>
-        </footer>
+<div class="shell" id="capture">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div><h1>ChronoPulse</h1><p>Time, streaks and the days you have left</p></div>
     </div>
+    <div class="actions">
+      <button id="audioBtn" class="pill" data-state="paused" aria-label="Toggle tick sound">
+        <i class="dot"></i><svg class="i"><use id="audioUse" href="#i-pause"/></svg>
+        <span>Tick: <b id="audioLabel">Paused</b></span>
+      </button>
+      <button id="shareBtn" class="pill"><svg class="i"><use href="#i-share"/></svg><span>Share</span></button>
+    </div>
+  </header>
 
-    <script src="script.js"></script>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" class="on" aria-selected="true" data-tab="countdown">Countdown Engine</button>
+    <button role="tab" aria-selected="false" data-tab="profile">User Profile</button>
+    <button role="tab" aria-selected="false" data-tab="habits">Habit Dashboard</button>
+    <button role="tab" aria-selected="false" data-tab="life">Life Progress</button>
+    <button role="tab" aria-selected="false" data-tab="diff">Date Diff</button>
+  </nav>
+
+  <main>
+    <!-- Countdown -->
+    <section id="tab-countdown" class="panel on" role="tabpanel">
+      <div class="chips" id="chips"></div>
+      <div id="cdEmpty" class="empty glass">
+        <h2>No countdown yet</h2>
+        <p>Pick a date that matters and watch it tick down to the millisecond.</p>
+        <button class="btn" data-open="eventDlg"><svg class="i"><use href="#i-plus"/></svg>Create countdown</button>
+      </div>
+      <div id="cdLive" hidden>
+        <div class="hero glass glow">
+          <p class="muted" id="cdNow"></p>
+          <h2 id="cdTitle"></h2>
+          <p class="muted" id="cdAt"></p>
+          <div class="digits" id="cdGrid">
+            <div><b>00</b><span>Months</span></div><div><b>00</b><span>Days</span></div>
+            <div><b>00</b><span>Hours</span></div><div><b>00</b><span>Minutes</span></div>
+            <div><b>00</b><span>Seconds</span></div><div><b>000</b><span>Millisec</span></div>
+          </div>
+          <div class="bar-head"><span id="cdPct">0%</span><span id="cdLeft"></span></div>
+          <div class="track"><i id="cdBar"></i></div>
+        </div>
+        <div class="stats">
+          <div class="glass stat"><span>Days left</span><b id="mD">0</b></div>
+          <div class="glass stat"><span>Weeks left</span><b id="mW">0</b></div>
+          <div class="glass stat"><span>Hours left</span><b id="mH">0</b></div>
+          <div class="glass stat"><span>Minutes left</span><b id="mM">0</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="tab-profile" class="panel" role="tabpanel">
+      <form id="profileForm" class="glass card" autocomplete="off">
+        <h2>Your lifespan</h2>
+        <div class="row2">
+          <label>Name<input class="in" id="pName" maxlength="60" placeholder="What should we call you?"></label>
+          <label>Date of birth<input class="in" id="pDob" type="date"></label>
+        </div>
+        <button class="btn" type="submit">Save profile</button>
+      </form>
+      <p id="pEmpty" class="hint">Add your date of birth to see your exact age and time lived.</p>
+      <div class="stats" id="pStats">
+        <div class="glass stat"><span>Exact age</span><b id="pAge">—</b></div>
+        <div class="glass stat"><span>Next birthday</span><b id="pBday">—</b></div>
+        <div class="glass stat"><span>Days lived</span><b id="pDays">—</b></div>
+        <div class="glass stat"><span>Hours lived</span><b id="pHours">—</b></div>
+      </div>
+      <div class="glass card">
+        <div class="card-head"><h2>Important dates</h2><button class="btn sm" data-open="eventDlg"><svg class="i"><use href="#i-plus"/></svg>Add</button></div>
+        <div id="eventList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Habits -->
+    <section id="tab-habits" class="panel" role="tabpanel">
+      <div class="card-head pad"><h2>Goals</h2><button class="btn sm" data-open="goalDlg"><svg class="i"><use href="#i-plus"/></svg>New goal</button></div>
+      <div class="split">
+        <div id="goals" class="goals"></div>
+        <div class="glass card" id="chart"></div>
+      </div>
+    </section>
+
+    <!-- Life -->
+    <section id="tab-life" class="panel" role="tabpanel">
+      <div class="glass card" id="lifeBars"></div>
+    </section>
+
+    <!-- Diff -->
+    <section id="tab-diff" class="panel" role="tabpanel">
+      <div class="glass card">
+        <h2>Between two dates</h2>
+        <div class="row2">
+          <label>Start date<input class="in" id="dA" type="date"></label>
+          <label>End date<input class="in" id="dB" type="date"></label>
+        </div>
+      </div>
+      <div class="glass hero glow" id="dOut"></div>
+    </section>
+  </main>
+  <footer>Everything stays in this browser. Nothing is sent anywhere.</footer>
+</div>
+
+<dialog id="eventDlg"><form id="eventForm" class="sheet" autocomplete="off">
+  <div class="card-head"><h3>New countdown</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label>Event name<input class="in" id="eTitle" maxlength="60" required placeholder="e.g. Product launch"></label>
+  <label>Date and time<input class="in" id="eAt" type="datetime-local" required></label>
+  <button class="btn" type="submit">Start countdown</button>
+</form></dialog>
+
+<dialog id="goalDlg"><form id="goalForm" class="sheet" autocomplete="off">
+  <div class="card-head"><h3>New goal</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label>Goal name<input class="in" id="gTitle" maxlength="60" required placeholder="e.g. Get stronger"></label>
+  <div class="field">Daily tasks<div id="gTasks"></div></div>
+  <button type="button" class="btn ghost sm" id="addRow"><svg class="i"><use href="#i-plus"/></svg>Add another task</button>
+  <button class="btn" type="submit">Save goal</button>
+</form></dialog>
+
+<dialog id="calDlg"><div class="sheet">
+  <div class="card-head"><h3 id="calTitle"></h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <p class="muted" id="calStats"></p>
+  <div class="cal-nav"><button class="ico" id="calPrev" aria-label="Previous month"><svg class="i"><use href="#i-left"/></svg></button><b id="calMonth"></b><button class="ico" id="calNext" aria-label="Next month"><svg class="i"><use href="#i-right"/></svg></button></div>
+  <div class="cal" id="calGrid"></div>
+  <p class="hint">🔥 marks a completed day. Tap a day to add or remove it.</p>
+</div></dialog>
+
+<dialog id="shareDlg"><div class="sheet wide">
+  <div class="card-head"><h3>Share progress</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <p class="muted" id="shotNote"></p>
+  <img id="shotImg" alt="Screenshot preview">
+  <div class="btns"><button class="btn" id="shotDl">Download image</button><button class="btn ghost" id="shotShare">Share</button><button class="btn ghost" id="shotCopy">Copy summary</button></div>
+</div></dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
 </body>
-
 </html>
