@@ -1,0 +1,23 @@
+{
+  "id": "./",
+  "name": "ChronoPulse 4.1 — Offline-First Productivity",
+  "short_name": "ChronoPulse",
+  "description": "Countdowns, focus timer, tasks, habits and life progress. Works offline; your data stays on your device.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0d14",
+  "theme_color": "#0a0d14",
+  "lang": "en",
+  "categories": ["productivity", "lifestyle"],
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Start a focus session", "short_name": "Focus", "url": "./#focus", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Dashboard", "short_name": "Dashboard", "url": "./#dash", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ]
+}
