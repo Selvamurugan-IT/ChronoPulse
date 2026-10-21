@@ -1,0 +1,10 @@
+{
+  "name": "chronopulse",
+  "version": "4.2.6",
+  "private": true,
+  "description": "ChronoPulse 4.2 — offline-first countdown, focus, tasks and habits PWA (static site, no build step).",
+  "scripts": {
+    "test": "node --test",
+    "e2e": "python3 e2e/phase3.e2e.py && python3 e2e/streak.e2e.py && python3 e2e/sound.e2e.py && python3 e2e/ultimate.e2e.py && python3 e2e/offline.e2e.py && python3 e2e/offline.e2e.py /repository-name"
+  }
+}

@@ -1,0 +1,113 @@
+/* ChronoPulse 4.2 — colour themes. The base file (style.css) defines Dark; each theme below only overrides variables, selected by <html data-theme="...">.
+   Chosen in Settings, stored as cfg.theme in the normal app data (key chronopulse:v4.1), applied before first paint by theme-boot.js.
+   Contrast of the main text / muted / button pairs is checked by tests/themes.test.js. */
+
+/* ---- OLED True Black: pure #000 background (no gradients) so AMOLED pixels switch off; surfaces are barely lifted ---- */
+html[data-theme=oled]{--bg:#000000;--surf:#0a0a0a;--line:#202020;--tx:#f2f2f2;--mu:#a0a0a0;--glow:rgba(249,115,22,.22);
+  --glass:rgba(10,10,10,.9);--sheet:#0a0a0a;--input:#0e0e0e;--navbg:#000000;--scrim:rgba(0,0,0,.88);--inset:rgba(18,18,18,.9);--inset2:rgba(18,18,18,.9);--tog:#1f1f1f;--togi:#8a8a8a;
+  --g1:transparent;--g2:transparent;--heat0:#141414;--track:#1c1c1c;--dim:#6a6a6a}
+html[data-theme=oled] body{background:#000}
+html[data-theme=oled] .glass{backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* ---- Cyberpunk Neon: near-black violet, cyan + magenta accents, glowing edges ---- */
+html[data-theme=neon]{--bg:#06010f;--surf:#0e0620;--line:#3a1a78;--em:#00e5ff;--em2:#ff3df0;--cy:#00e5ff;--ok:#39ff88;--ok2:#7dffb0;--red:#ff3b6b;--glow:rgba(0,229,255,.38);--tx:#f5f0ff;--mu:#b9aae3;
+  --glass:rgba(16,6,36,.74);--sheet:rgba(14,6,32,.97);--input:rgba(8,3,20,.82);--navbg:rgba(6,1,15,.94);--scrim:rgba(4,0,12,.8);--inset:rgba(8,3,20,.6);--inset2:rgba(8,3,20,.6);--tog:#2a1456;--togi:#8e7fc4;
+  --on-em:#06010f;--grad:linear-gradient(135deg,#00e5ff,#ff3df0);--g1:rgba(255,61,240,.18);--g2:rgba(0,229,255,.14);--ice:#7df9ff;--num:#ffffff;--numglow:rgba(0,229,255,.65);--track:#24104d;--warn:#ffe600;--errtx:#ff7a9a;--lit:#bffcff;--dim:#6f62a0;
+  --c1:#00e5ff;--c2:#ff3df0;--c3:#39ff88;--c4:#ffe600;--c5:#9d6bff;--c6:#ff7a00;--heat0:#1b0f3a;--heat1:#7df9ff;--heat2:#00e5ff;--heat3:#ff3df0;--heat4:#c4007a}
+html[data-theme=neon] .glass{border-color:rgba(0,229,255,.32);box-shadow:0 0 24px -12px rgba(0,229,255,.7),inset 0 0 18px -14px rgba(255,61,240,.8)}
+html[data-theme=neon] h1,html[data-theme=neon] h2,html[data-theme=neon] h3{text-shadow:0 0 14px rgba(0,229,255,.38)}
+html[data-theme=neon] .btn{box-shadow:0 0 18px -4px rgba(0,229,255,.7)}
+html[data-theme=neon] .bnav button.on{text-shadow:0 0 10px rgba(0,229,255,.8)}
+
+/* ---- Soft Pastel: calm light theme (lavender background, rose + lilac accents) ---- */
+html[data-theme=pastel]{--bg:#f6f1fa;--surf:#ffffff;--line:#e0d3ef;--em:#f48fb1;--em2:#a5336b;--cy:#c2410c;--ok:#1f7a5c;--ok2:#2f9e77;--red:#c2335d;--glow:rgba(244,143,177,.35);--tx:#3a2f4d;--mu:#665a7c;--scheme:light;
+  --glass:rgba(255,255,255,.82);--sheet:rgba(255,255,255,.98);--input:#ffffff;--navbg:rgba(255,255,255,.94);--scrim:rgba(70,50,100,.38);--inset:rgba(240,232,248,.85);--inset2:rgba(240,232,248,.85);--tog:#d9cdea;--togi:#8f7fae;
+  --on-em:#3a2350;--grad:linear-gradient(135deg,#f9b4cf,#c9b3f7);--g1:rgba(244,143,177,.26);--g2:rgba(173,155,245,.24);--ice:#2f6fb5;--num:#3a2f4d;--numglow:rgba(244,143,177,.6);--track:#e6dcf2;--warn:#8a5a00;--errtx:#b42347;--lit:#3a2f4d;--dim:#a095b8;
+  --c1:#d9608f;--c2:#3f9c7e;--c3:#5f8ee0;--c4:#8a68d6;--c5:#c4691a;--c6:#a8820f;--heat0:#ece3f5;--heat1:#fbd3b4;--heat2:#f59a5b;--heat3:#e0602a;--heat4:#a32a2a}
+html[data-theme=pastel] .glass{box-shadow:0 6px 24px -14px rgba(120,80,160,.35)}
+html[data-theme=pastel] .sheet{box-shadow:0 -10px 40px -16px rgba(120,80,160,.4);border-color:rgba(244,143,177,.55)}
+html[data-theme=pastel] .btn{box-shadow:0 6px 16px -8px rgba(201,120,170,.7)}
+html[data-theme=pastel] .bnav{border-top:1px solid var(--line)}
+html[data-theme=pastel] .ghost{color:var(--tx)}
+
+html{color-scheme:var(--scheme)}
+/* theme picker tiles: each swatch shows that theme's own colours, independent of the active theme */
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.theme-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:10px;border-radius:14px;border:2px solid var(--line);background:var(--inset);color:var(--tx);cursor:pointer;text-align:left;font:600 .9rem var(--f);min-height:92px}
+.theme-tile small{color:var(--mu);font-weight:500;font-size:.75rem}
+.theme-tile[aria-checked=true]{border-color:var(--em);box-shadow:0 0 0 3px var(--glow)}
+.theme-tile .sw{display:flex;width:100%;height:30px;border-radius:9px;overflow:hidden;border:1px solid rgba(128,128,128,.35)}
+.theme-tile .sw i{flex:1}
+.sw-dark{background:#0a0d14}.sw-dark i:nth-child(1){background:#121824}.sw-dark i:nth-child(2){background:#f97316}.sw-dark i:nth-child(3){background:#10b981}
+.sw-oled{background:#000}.sw-oled i:nth-child(1){background:#0a0a0a}.sw-oled i:nth-child(2){background:#f97316}.sw-oled i:nth-child(3){background:#f2f2f2}
+.sw-neon{background:#06010f}.sw-neon i:nth-child(1){background:#00e5ff}.sw-neon i:nth-child(2){background:#ff3df0}.sw-neon i:nth-child(3){background:#39ff88}
+.sw-pastel{background:#f6f1fa}.sw-pastel i:nth-child(1){background:#f9b4cf}.sw-pastel i:nth-child(2){background:#c9b3f7}.sw-pastel i:nth-child(3){background:#a8e0c8}
+
+/* streak freezes, frozen calendar days, badges, habit matrix */
+.stk-shields{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.shield-row{display:flex;gap:10px;justify-content:center}
+.shield{width:30px;height:34px;filter:drop-shadow(0 0 6px var(--ice))}
+.shield path{fill:var(--ice);stroke:var(--ice);stroke-width:2;stroke-linejoin:round}
+.shield .mk{fill:none;stroke:var(--bg);stroke-width:3;stroke-linecap:round}
+.shield.used{filter:none;opacity:.5}.shield.used path{fill:none}.shield.used .mk{stroke:var(--ice)}
+.stk-day.ice{color:var(--tx);font-weight:800;background:linear-gradient(90deg,color-mix(in srgb,var(--ice) 55%,transparent),color-mix(in srgb,var(--ice) 35%,transparent))}
+.stk-day.ice::after{content:"";position:absolute;right:5px;top:5px;width:6px;height:6px;border-radius:50%;background:var(--ice)}
+.stk-day.ice.single{border-radius:99px}.stk-day.ice.start{border-radius:99px 0 0 99px}.stk-day.ice.end{border-radius:0 99px 99px 0}.stk-day.ice.mid{border-radius:0}
+.badge-sec h4,.matrix-sec h4{font-size:.95rem;font-weight:700;margin:2px 0 8px}
+.badge-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sbadge{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:16px;border:1px solid var(--line);background:var(--inset);text-align:center;position:relative}
+.sbadge .medal{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem;color:#2b1800;position:relative}
+.sbadge .medal svg{width:26px;height:26px;fill:currentColor}
+.sbadge b{font-size:.85rem}.sbadge small{color:var(--mu);font-size:.72rem;line-height:1.25}
+.sbadge .bar{width:80%;height:5px;border-radius:9px;background:var(--line);overflow:hidden}.sbadge .bar i{display:block;height:100%;background:var(--em)}
+.sbadge.t1 .medal{background:radial-gradient(circle at 35% 30%,#f3b27a,#cd7f32 60%,#8a4f1c);--bg-glow:#cd7f32}
+.sbadge.t2 .medal{background:radial-gradient(circle at 35% 30%,#ffffff,#c0c8d4 60%,#8791a1);--bg-glow:#c0c8d4}
+.sbadge.t3 .medal{background:radial-gradient(circle at 35% 30%,#fff3b0,#ffd34d 55%,#c58a00);--bg-glow:#ffd34d}
+.sbadge.on{border-color:var(--bg-glow,var(--em))}
+.sbadge.on .medal{box-shadow:0 0 0 3px rgba(255,255,255,.12),0 0 22px 2px var(--bg-glow);animation:badgeGlow 2.6s ease-in-out infinite}
+.sbadge.t1{--bg-glow:#cd7f32}.sbadge.t2{--bg-glow:#c0c8d4}.sbadge.t3{--bg-glow:#ffd34d}
+.sbadge.off .medal{background:var(--tog);color:var(--togi);box-shadow:none}.sbadge.off{opacity:.9}
+@keyframes badgeGlow{50%{box-shadow:0 0 0 3px rgba(255,255,255,.2),0 0 34px 6px var(--bg-glow)}}
+.matrix{display:grid;gap:6px;overflow-x:auto}
+.mx-row{display:grid;grid-template-columns:minmax(80px,1.4fr) repeat(7,minmax(22px,1fr)) 34px;gap:5px;align-items:center;font-size:.8rem}
+.mx-row.head{color:var(--mu);font-size:.7rem;text-align:center}
+.mx-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.mx-c{height:22px;border-radius:7px;background:var(--heat0)}.mx-c.on{background:var(--em);box-shadow:0 0 8px -2px var(--em)}
+.mx-row .ct{color:var(--mu);text-align:right;font-variant-numeric:tabular-nums}
+
+/* insights charts (SVG uses the theme variables, so every theme recolours them) */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.seg button{background:none;border:0;color:var(--mu);padding:7px 14px;font:700 .8rem var(--f);cursor:pointer;min-height:36px}
+.seg button[aria-checked=true]{background:var(--grad);color:var(--on-em)}
+.chart-svg{width:100%}.chart-svg svg{width:100%;height:auto;display:block;overflow:visible}
+.chart-svg text{fill:var(--mu);font:600 11px var(--f)}
+.ch-grid{stroke:var(--line);stroke-width:1}
+.ch-goal{stroke:var(--ok2);stroke-width:2;stroke-dasharray:6 5}
+.ch-goaltxt{fill:var(--ok)!important}
+.ch-bar{fill:var(--c1)}.ch-bar.met{fill:var(--ok2)}.ch-bar.today{stroke:var(--tx);stroke-width:2}.ch-bar.fut{fill:var(--heat0)}
+.ins-target{display:flex;align-items:center;gap:10px;margin-top:10px;font-weight:600;font-size:.9rem}.ins-target select{width:auto;min-height:40px}
+.heat-scroll{overflow-x:auto;padding-bottom:6px}.heat-scroll svg{min-width:720px}
+.hc{fill:var(--heat0)}.hc.l1{fill:var(--heat1)}.hc.l2{fill:var(--heat2)}.hc.l3{fill:var(--heat3)}.hc.l4{fill:var(--heat4)}.hc.today{stroke:var(--tx);stroke-width:1.5}
+.heat-legend{display:flex;align-items:center;gap:5px;justify-content:flex-end;font-size:.75rem;color:var(--mu);margin-top:4px}
+.heat-legend i{width:13px;height:13px;border-radius:3px;background:var(--heat0)}.heat-legend .h1{background:var(--heat1)}.heat-legend .h2{background:var(--heat2)}.heat-legend .h3{background:var(--heat3)}.heat-legend .h4{background:var(--heat4)}
+.donut-wrap,.rings-wrap{display:grid;grid-template-columns:minmax(150px,200px) 1fr;gap:16px;align-items:center}
+@media(max-width:420px){.donut-wrap,.rings-wrap{grid-template-columns:1fr}.donut-wrap .chart-svg,.rings-wrap .chart-svg{max-width:220px;margin:0 auto}}
+.donut-seg{fill:none;stroke-width:26}.donut-total{fill:var(--tx)!important;font:800 24px var(--f)!important}.donut-sub{font-size:10px!important}
+.legend{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px}
+.legend li{display:flex;align-items:center;gap:9px;font-size:.88rem}.legend .dot{width:12px;height:12px;border-radius:4px;flex:none}
+.legend .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.legend .pc{font-weight:800;font-variant-numeric:tabular-nums}.legend .ct{color:var(--mu);font-size:.78rem;min-width:3.2em;text-align:right}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:14}.ring-fg{fill:none;stroke-width:14;stroke-linecap:round;transition:stroke-dasharray 1.1s cubic-bezier(.2,.8,.2,1)}
+.ring-center{fill:var(--tx)!important;font:800 30px var(--f)!important}.ring-cs{font-size:10px!important}
+.legend.rl li{flex-direction:column;align-items:flex-start;gap:2px}.legend.rl .t{display:flex;align-items:center;gap:8px;font-weight:700}.legend.rl .s{color:var(--mu);font-size:.78rem;margin-left:20px}
+html.cp-rm .ring-fg,html.cp-rm .sbadge.on .medal{transition:none;animation:none}
+@media(prefers-reduced-motion:reduce){.ring-fg{transition:none}}
+
+/* tiers 4+ : Diamond (200), Legend (300), Legend II ... (every further 100 days) */
+.sbadge.t4 .medal{background:radial-gradient(circle at 35% 30%,#d9fbff,#38e8ff 62%,#38e8ff);--bg-glow:#38e8ff}
+.sbadge.t5 .medal{background:radial-gradient(circle at 35% 30%,#fbe1ff,#e879f9 62%,#e879f9);--bg-glow:#e879f9}
+.sbadge.t6 .medal{background:radial-gradient(circle at 35% 30%,#ffe0e6,#fb7185 62%,#fb7185);--bg-glow:#fb7185}
+.sbadge.t7 .medal{background:radial-gradient(circle at 35% 30%,#f0ffd0,#a3e635 62%,#a3e635);--bg-glow:#a3e635}
+.sbadge.t8 .medal{background:radial-gradient(circle at 35% 30%,#e0efff,#60a5fa 62%,#60a5fa);--bg-glow:#60a5fa}
+.sbadge.t9 .medal{background:radial-gradient(circle at 35% 30%,#ffe3cc,#f97316 62%,#f97316);--bg-glow:#f97316}
+.sbadge.t10 .medal{background:radial-gradient(circle at 35% 30%,#ffffff,#fde68a 62%,#fde68a);--bg-glow:#fde68a}
+.badge-row{flex-wrap:wrap}

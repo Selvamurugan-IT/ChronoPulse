@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChronoPulse 4.2</title>
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0a0d14">
+<script src="theme-boot.js"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23f97316' stroke-width='9'/%3E%3Cpath d='M50 26v26l16 10' fill='none' stroke='%23f97316' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ChronoPulse">
+<meta name="description" content="Countdowns, focus timer, tasks, habits and life progress. Works offline; your data stays on your device.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="themes.css">
+<script defer src="lib/lib.js"></script>
+<script defer src="lib/lib41.js"></script>
+<script defer src="lib/lib42.js"></script>
+<script defer src="lib/lib43.js"></script>
+<script defer src="lib/lib44.js"></script>
+<script defer src="lib/lib45.js"></script>
+<script defer src="lib/lib46.js"></script>
+<script defer src="lib/lib47.js"></script>
+<script defer src="fx.js"></script>
+<script defer src="sfx.js"></script>
+<script defer src="script.js"></script>
+<script defer src="focus-ui.js"></script>
+<script defer src="reminders.js"></script>
+<script defer src="cinema.js"></script>
+<script defer src="notifsound.js"></script>
+<script defer src="orbit.js"></script>
+<script defer src="streak-ui.js"></script>
+<script defer src="floaty.js"></script>
+<script defer src="bgnotify.js"></script>
+<script defer src="theme.js"></script>
+<script defer src="insights-ui.js"></script>
+<script defer src="pwa.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-habit" viewBox="0 0 24 24"><path d="m9 11 3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 4 3 5-6"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="m7 4-4 4 4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 2h12M6 22h12M7 2c0 6 5 7 5 10s-5 4-5 10M17 2c0 6-5 7-5 10s5 4 5 10"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v13m-6-6 6 6 6-6M4 21h16"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2h6M12 2v3"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V3m-6 6 6-6 6 6M4 21h16"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m6 4 14 8-14 8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 4v16M17 4v16"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <aside class="side">
+    <div class="brand">
+      <span class="logo"><svg class="i"><use href="#i-clock"/></svg></span>
+      <div><h1>ChronoPulse <em>4.2</em></h1><p>Time · Focus · Habits</p></div>
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <button data-tab="countdown" class="on"><svg class="i"><use href="#i-clock"/></svg>Countdown Engine</button>
+      <button data-tab="focus"><svg class="i"><use href="#i-timer"/></svg>Focus</button>
+      <button data-tab="dash"><svg class="i"><use href="#i-dash"/></svg>Dashboard</button>
+      <button data-tab="profile"><svg class="i"><use href="#i-user"/></svg>Profile</button>
+      <button data-tab="habits"><svg class="i"><use href="#i-habit"/></svg>Habits &amp; Tasks</button>
+      <button data-tab="life"><svg class="i"><use href="#i-chart"/></svg>Life Progress</button>
+      <button data-tab="diff"><svg class="i"><use href="#i-swap"/></svg>Date Diff</button>
+      <button data-tab="data"><svg class="i"><use href="#i-save"/></svg>Backup &amp; Export</button>
+      <button data-tab="settings"><svg class="i"><use href="#i-gear"/></svg>Settings</button>
+    </nav>
+    <div class="tagline glass"><svg class="i"><use href="#i-chart"/></svg><p>Small steps every day lead to big results.</p></div>
+  </aside>
+
+  <div class="main" id="main">
+    <header class="top">
+      <span class="logo sm-logo"><svg class="i"><use href="#i-clock"/></svg></span>
+      <div class="ttl"><h2 id="pageTitle">Countdown Engine</h2><p id="pageSub">Make every second count!</p></div>
+      <div class="actions">
+        <span class="pill" id="netPill" hidden role="status">Offline</span>
+        <button class="timer-chip" id="timerChip" hidden aria-label="Open focus timer"><svg class="i"><use href="#i-timer"/></svg><b id="chipTime">25:00</b></button>
+        <span class="who" id="who" hidden></span>
+        <button id="themeQuick" class="theme-quick" type="button" aria-label="Change theme"><svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.700 0 2.200-1 1.600-2-.6-1.100 0-2.500 1.500-2.500H17a4 4 0 0 0 4-4C21 6.500 17 3 12 3Z"/><circle cx="7.500" cy="11" r="1"/><circle cx="10" cy="7.500" r="1"/><circle cx="14.500" cy="7.500" r="1"/></svg></button>
+        <button id="streakBtn" class="stk-badge" type="button" data-state="cold" aria-haspopup="dialog" aria-label="Streak: 0 days. Open streak calendar."><span class="flame-wrap" aria-hidden="true"></span><b id="streakCount">0</b></button>
+        <button id="shareBtn" class="btn ghost sm" aria-label="Share or screenshot"><svg class="i"><use href="#i-share"/></svg><span class="lbl">Share / Screenshot</span></button>
+        <button id="audioBtn" class="audio" data-state="paused" role="switch" aria-checked="true" aria-label="Tick sound">
+          <span class="alabel"><svg class="i"><use href="#i-volume"/></svg><span class="lbl">Audio: </span><b id="audioLabel">ON</b></span><small id="audioState">Paused</small><i class="sw"></i>
+        </button>
+      </div>
+    </header>
+
+    <div id="banners" aria-live="polite"></div>
+
+    <!-- Countdown / Home -->
+    <section id="tab-countdown" class="panel on">
+      <div id="cdEmpty" class="empty glass">
+        <svg class="i big"><use href="#i-target"/></svg>
+        <h3>No countdown target set</h3>
+        <p>Pick a date and time to start the live ticker.</p>
+        <button class="btn" data-open="eventDlg" data-mode="target"><svg class="i"><use href="#i-plus"/></svg>Set Target Date</button>
+      </div>
+      <div id="cdLive" hidden>
+        <p class="greet" id="greet"></p>
+        <div class="hero glass glow">
+          <div class="ring big-ring" id="cdRing"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" cx="50" cy="50" r="44" pathLength="100"/></svg><svg class="i mid"><use href="#i-clock"/></svg></div>
+          <div class="hero-body">
+            <p class="muted">Countdown to</p>
+            <h2 id="cdTitle"></h2>
+            <p class="muted" id="cdAt"></p>
+            <p class="cine-minute" id="cineMinute" hidden><i aria-hidden="true"></i>Final minute</p>
+            <div class="digits" id="cdGrid">
+              <div><b>00</b><span>Months</span></div><div><b>00</b><span>Days</span></div>
+              <div><b>00</b><span>Hours</span></div><div><b>00</b><span>Minutes</span></div>
+              <div><b>00</b><span>Seconds</span></div><div><b>000</b><span>Millisec</span></div>
+            </div>
+            <div class="bar-head"><span id="cdPct">0%</span><span id="cdLeft"></span></div>
+            <div class="track"><i id="cdBar"></i></div>
+            <p class="muted sync" id="cdNow"></p>
+            <p class="hint" id="cineHint" hidden></p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="glass stat"><svg class="i"><use href="#i-cal"/></svg><div><span>Days remaining</span><b id="mD">0</b></div></div>
+          <div class="glass stat"><svg class="i"><use href="#i-cal"/></svg><div><span>Weeks remaining</span><b id="mW">0</b></div></div>
+          <div class="glass stat"><svg class="i"><use href="#i-clock"/></svg><div><span>Hours remaining</span><b id="mH">0</b></div></div>
+          <div class="glass stat"><svg class="i"><use href="#i-hourglass"/></svg><div><span>Minutes remaining</span><b id="mM">0</b></div></div>
+        </div>
+      </div>
+      <div class="glass card" id="targetsCard" hidden>
+        <div class="card-head"><h3>Target dates</h3>
+          <span class="row-actions"><button class="ico" id="cdEdit" aria-label="Edit target"><svg class="i"><use href="#i-edit"/></svg></button><button class="ico del" id="cdDel" aria-label="Remove target"><svg class="i"><use href="#i-trash"/></svg></button></span></div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="glass card" id="homeToday"></div>
+      <div class="quick" id="quick">
+        <button class="glass qtile" data-tab="profile"><svg class="i"><use href="#i-user"/></svg>Profile</button>
+        <button class="glass qtile" data-tab="habits"><svg class="i"><use href="#i-habit"/></svg>Habits</button>
+        <button class="glass qtile" data-tab="life"><svg class="i"><use href="#i-chart"/></svg>Life</button>
+        <button class="glass qtile" data-tab="diff"><svg class="i"><use href="#i-swap"/></svg>Date Diff</button>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="tab-profile" class="panel">
+      <div class="glass card pcard">
+        <div class="avatar" id="pAvatar">?</div>
+        <div class="pinfo"><h3 id="pNameView">—</h3><p class="muted" id="pDobView"></p><p class="muted" id="pExact"></p></div>
+        <button class="btn ghost sm" data-open="profileDlg"><svg class="i"><use href="#i-edit"/></svg>Edit profile</button>
+      </div>
+      <div class="glass card" id="profBadgeCard">
+        <div class="card-head"><h3>Streak badges</h3><button class="btn sm ghost" type="button" id="profStreakOpen">Streak calendar</button></div>
+        <div class="badge-row" id="profBadges"></div>
+      </div>
+      <div class="glass card">
+        <h3>Age &amp; life stats</h3>
+        <div class="orbs">
+          <div class="orb"><b id="pAge">—</b><span>Years · age</span></div>
+          <div class="orb"><b id="pBday">—</b><span>Days · next birthday</span></div>
+          <div class="orb"><b id="pDays">—</b><span>Days lived</span></div>
+          <div class="orb"><b id="pHours">—</b><span>Hours lived</span></div>
+        </div>
+        <p class="hint" id="pHint"></p>
+      </div>
+      <div class="glass card">
+        <div class="card-head"><h3>Personal events</h3><button class="btn sm" data-open="eventDlg" data-mode="event"><svg class="i"><use href="#i-plus"/></svg>Add Event</button></div>
+        <div id="eventList" class="elist"></div>
+      </div>
+    </section>
+
+    <!-- Habits -->
+    <section id="tab-habits" class="panel">
+      <div class="glass card" id="todoCard"></div>
+      <div class="glass card overall" id="overall"></div>
+      <div class="card-head"><h3>Your goals</h3><button class="btn sm" data-open="goalDlg" data-mode="new"><svg class="i"><use href="#i-plus"/></svg>Create Goal</button></div>
+      <div id="goalCards" class="goal-cards"></div>
+      <div class="glass card" id="taskCard"></div>
+      <div class="glass card"><h3>Active streaks</h3><div class="chart-host" id="streakChart"></div><p class="hint" id="chartHint"></p></div>
+    </section>
+
+    <!-- Life -->
+    <section id="tab-life" class="panel">
+      <div class="three" id="lifeRings"></div>
+      <div class="glass card quote"><svg class="i"><use href="#i-chart"/></svg><div><h3>You're doing great!</h3><p class="muted">Keep going. The best is yet to come.</p></div></div>
+      <div class="glass card"><h3>Quick stats</h3><div id="quickStats" class="qs"></div></div>
+    </section>
+
+    <!-- Focus -->
+    <section id="tab-focus" class="panel">
+      <div class="glass card ftimer" id="fCard">
+        <ol class="phases" id="fPhases" aria-label="Session sequence"><li data-p="focus">Focus</li><li data-p="short">Short break</li><li data-p="long">Long break</li></ol>
+        <div class="ring fring" id="fRing" role="timer" aria-label="Time remaining"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" cx="50" cy="50" r="44" pathLength="100"/></svg><b id="fTime">25:00</b></div>
+        <p class="fstate" id="fState" role="status"></p>
+        <p class="muted fcycle" id="fCycle"></p>
+        <label class="flink">Working on<select class="in" id="fLink"></select></label>
+        <div class="fbtns"><button class="btn" id="fStart" type="button">Start focus</button><button class="btn ghost" id="fSkip" type="button">Skip</button><button class="btn ghost" id="fReset" type="button">Reset</button></div>
+        <p class="hint" id="fHint"></p>
+      </div>
+      <div class="fside">
+        <div class="glass card"><div class="card-head"><h3>Today</h3><button class="btn sm ghost" type="button" data-open="cfgDlg"><svg class="i"><use href="#i-gear"/></svg>Timer settings</button></div><div class="metrics" id="fToday"></div></div>
+        <div class="glass card"><div class="card-head"><h3>Recent sessions</h3><button class="btn sm ghost" type="button" id="fClear">Clear history</button></div><div id="fHist"></div></div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="tab-dash" class="panel">
+      <button class="back" data-tab="more"><svg class="i"><use href="#i-left"/></svg>More</button>
+      <div class="glass card" id="dToday"></div>
+      <div class="glass card"><h3>Last 7 days</h3><p class="hint" id="dRange"></p><div class="metrics" id="dCompare"></div></div>
+      <div class="glass card chart-empty" id="dEmpty" hidden><b>No chart data yet</b><p>Finish a focus session, complete a task or check in a habit and your charts will appear here.</p><button class="btn sm" type="button" data-tab="focus">Start a focus session</button></div>
+      <div class="charts2">
+        <div class="glass card"><h3>Focus minutes per day</h3><div class="chart-host" id="chFocus"></div></div>
+        <div class="glass card"><h3>Focus sessions completed per day</h3><div class="chart-host" id="chSess"></div></div>
+        <div class="glass card"><h3>Tasks completed per day</h3><div class="chart-host" id="chTasks"></div></div>
+        <div class="glass card"><h3>Habit check-ins per day</h3><div class="chart-host" id="chChk"></div></div>
+      </div>
+      <div class="glass card"><h3>Habit consistency</h3><div id="dHabits"></div></div>
+      <div class="glass card"><h3>Weekly goal progress</h3><div id="dGoals"></div></div>
+    </section>
+
+    <!-- Backup & Export -->
+    <section id="tab-data" class="panel">
+      <button class="back" data-tab="more"><svg class="i"><use href="#i-left"/></svg>More</button>
+      <div class="glass card sgroup">
+        <h3>JSON backup &amp; restore</h3>
+        <p class="hint">A backup is a file on this device containing your profile, countdowns, events, goals, habits, tasks, check-ins, focus history and settings. It is not uploaded anywhere.</p>
+        <button class="srow" type="button" id="bkExport"><svg class="i"><use href="#i-down"/></svg><span>Export backup<small class="muted">Download ChronoPulse-Backup-YYYY-MM-DD.json</small></span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <button class="srow" type="button" id="bkImport"><svg class="i"><use href="#i-up"/></svg><span>Import / restore backup<small class="muted">Choose a ChronoPulse .json file — you can preview before anything changes</small></span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <input type="file" id="bkFile" accept=".json,application/json" hidden>
+        <button class="srow" type="button" id="bkUndo" hidden><svg class="i"><use href="#i-left"/></svg><span>Undo last restore<small class="muted" id="bkUndoNote"></small></span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <p class="hint" id="bkNote" role="status"></p>
+      </div>
+      <div class="glass card sgroup">
+        <h3>CSV export</h3>
+        <label>Dataset<select class="in" id="csvType">
+          <option value="sessions">Focus session history</option><option value="tasks">Daily tasks &amp; completions</option><option value="checkins">Habit check-in history</option><option value="daily">Daily summary (focus, tasks, check-ins)</option></select></label>
+        <button class="btn" type="button" id="csvGo"><svg class="i"><use href="#i-down"/></svg>Download CSV</button>
+        <p class="hint" id="csvNote" role="status">UTF-8 with a byte-order mark so Excel shows accents correctly. Values that start with = + - or @ are prefixed with an apostrophe so spreadsheets cannot run them as formulas.</p>
+      </div>
+      <div class="glass card sgroup">
+        <h3>Moving data between devices</h3>
+        <p class="hint">Backups are plain files; ChronoPulse does not sync automatically. To move from laptop to phone: export a backup here, send the file to the phone (cloud drive, email to yourself, USB or Bluetooth), open ChronoPulse on the phone, and choose Import / restore. Use Merge to combine with data already on the phone, or Replace to make the phone match the file.</p>
+      </div>
+    </section>
+
+    <!-- More -->
+    <section id="tab-more" class="panel">
+      <div class="menu">
+        <button class="glass mrow" data-tab="dash"><svg class="i"><use href="#i-dash"/></svg><div><b>Dashboard</b><span>Today and the last 7 days, from your real data</span></div><svg class="i chev"><use href="#i-right"/></svg></button>
+        <button class="glass mrow" data-tab="insights"><svg class="i"><use href="#i-dash"/></svg><div><b>Insights</b><span>Focus chart, 365-day heatmap, categories and progress rings</span></div><svg class="i chev"><use href="#i-right"/></svg></button>
+        <button class="glass mrow" data-tab="diff"><svg class="i"><use href="#i-swap"/></svg><div><b>Date Difference</b><span>Find the time between any two dates</span></div><svg class="i chev"><use href="#i-right"/></svg></button>
+        <button class="glass mrow" data-tab="data"><svg class="i"><use href="#i-save"/></svg><div><b>Backup &amp; Export</b><span>JSON backup, restore and CSV export</span></div><svg class="i chev"><use href="#i-right"/></svg></button>
+        <button class="glass mrow" data-tab="settings"><svg class="i"><use href="#i-gear"/></svg><div><b>Settings</b><span>Profile, audio, notifications, offline and install</span></div><svg class="i chev"><use href="#i-right"/></svg></button>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section id="tab-insights" class="panel">
+      <button class="back" data-tab="more"><svg class="i"><use href="#i-left"/></svg>More</button>
+      <div class="glass card chart-empty" id="insEmpty" hidden><b>No chart data yet</b><p>Your focus bars, 365-day heatmap and category donut appear after your first focus session, finished task or habit check-in.</p><button class="btn sm" type="button" data-tab="focus">Start a focus session</button></div>
+      <div class="glass card ins-data" id="insFocusCard">
+        <div class="card-head"><h3>Focus time</h3><div class="seg" role="radiogroup" aria-label="Focus chart range"><button type="button" role="radio" aria-checked="true" data-range="week">Week</button><button type="button" role="radio" aria-checked="false" data-range="weeks">8 weeks</button></div></div>
+        <p class="hint" id="insFocusSum"></p>
+        <div class="chart-svg" id="insFocus"></div>
+        <label class="ins-target">Daily focus goal<select id="insTarget" class="in"><option value="0">No goal line</option><option value="30">30 min</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option><option value="180">3 hours</option><option value="240">4 hours</option><option value="360">6 hours</option></select></label>
+      </div>
+      <div class="glass card ins-data"><h3>Consistency · last 365 days</h3><p class="hint" id="insHeatSum"></p><div class="heat-scroll" id="insHeatScroll"><div id="insHeat"></div></div><div class="heat-legend" aria-hidden="true"><span>Less</span><i class="h0"></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i><span>More</span></div></div>
+      <div class="glass card ins-data"><h3>Categories</h3><p class="hint" id="insCatSum"></p><div class="donut-wrap"><div class="chart-svg donut" id="insDonut"></div><ul class="legend" id="insLegend"></ul></div></div>
+      <div class="glass card"><h3>Life &amp; goal progress</h3><div class="rings-wrap"><div class="chart-svg rings" id="insRings"></div><ul class="legend" id="insRingLegend"></ul></div></div>
+    </section>
+
+    <!-- Diff -->
+    <section id="tab-diff" class="panel">
+      <button class="back" data-tab="more"><svg class="i"><use href="#i-left"/></svg>More</button>
+      <form class="glass card" id="diffForm" novalidate>
+        <div class="row2">
+          <label>Start date<input class="in" id="dA" type="date" min="1900-01-01"></label>
+          <label>End date<input class="in" id="dB" type="date" min="1900-01-01"></label>
+        </div>
+        <p class="hint err" id="dErr" role="alert" hidden></p>
+        <button class="btn" id="dCalc" type="submit"><svg class="i"><use href="#i-cal"/></svg>Calculate</button>
+      </form>
+      <div id="dOut"></div>
+    </section>
+
+    <!-- Settings -->
+    <section id="tab-settings" class="panel">
+      <button class="back" data-tab="more"><svg class="i"><use href="#i-left"/></svg>More</button>
+      <div class="glass card sgroup" id="themeCard">
+        <h3 id="themeH">Appearance</h3>
+        <div class="theme-grid" id="themeGrid" role="radiogroup" aria-labelledby="themeH">
+          <button type="button" role="radio" aria-checked="true" data-theme="dark" class="theme-tile"><span class="sw sw-dark" aria-hidden="true"><i></i><i></i><i></i></span><b>Dark</b><small>Default</small></button>
+          <button type="button" role="radio" aria-checked="false" data-theme="oled" class="theme-tile"><span class="sw sw-oled" aria-hidden="true"><i></i><i></i><i></i></span><b>OLED True Black</b><small>Pure #000 for AMOLED</small></button>
+          <button type="button" role="radio" aria-checked="false" data-theme="neon" class="theme-tile"><span class="sw sw-neon" aria-hidden="true"><i></i><i></i><i></i></span><b>Cyberpunk Neon</b><small>High-contrast glow</small></button>
+          <button type="button" role="radio" aria-checked="false" data-theme="pastel" class="theme-tile"><span class="sw sw-pastel" aria-hidden="true"><i></i><i></i><i></i></span><b>Soft Pastel</b><small>Calm &amp; light</small></button>
+        </div>
+        <p class="hint" id="themeNow" role="status"></p>
+      </div>
+      <div class="glass card sgroup">
+        <h3>Account</h3>
+        <button class="srow" data-open="profileDlg"><svg class="i"><use href="#i-user"/></svg><span>Edit profile</span><svg class="i chev"><use href="#i-right"/></svg></button>
+      </div>
+      <div class="glass card sgroup" id="fxCard">
+        <h3>Sound &amp; effects</h3>
+        <div class="srow"><svg class="i"><use href="#i-volume"/></svg><span>Sound<small class="muted" id="sAudioNote"></small><small class="muted">Master switch for the tick, warnings, countdown beeps and the celebration</small></span>
+          <button id="sAudio" class="tog" role="switch" aria-checked="true" aria-label="Sound (master switch)"><i></i></button></div>
+        <div class="srow"><svg class="i"><use href="#i-volume"/></svg><span><label for="fxVol">Volume <b id="fxVolVal">100%</b></label><input id="fxVol" type="range" min="0" max="100" step="5" value="100" aria-valuetext="100 percent"></span></div>
+        <div class="srow"><svg class="i"><use href="#i-target"/></svg><span><label for="fxSound">Celebration sound</label><select id="fxSound" class="in"><option value="impact">Cinematic impact</option><option value="fanfare">Bright fanfare</option><option value="pulse">Soft pulse</option></select></span><button type="button" class="btn sm ghost" id="fxPrev" aria-label="Preview celebration sound">Preview</button></div>
+        <div class="srow"><svg class="i"><use href="#i-hourglass"/></svg><span><label for="fxTen">Final 10 seconds</label><select id="fxTen" class="in"><option value="off">Silent (visual only)</option><option value="tick">Ticking</option><option value="beep">Beep</option><option value="synth">Rising synth</option></select></span><button type="button" class="btn sm ghost" id="fxTenPrev" aria-label="Preview final ten seconds sound">Preview</button></div>
+        <div class="srow"><svg class="i"><use href="#i-bell"/></svg><span>Final-minute warning sound<small class="muted">A two-tone alert once, when one minute is left</small></span><button type="button" class="btn sm ghost" id="fxWarnPrev" aria-label="Preview warning sound">Preview</button><button id="fxWarn" type="button" class="tog" role="switch" aria-checked="true" aria-label="Final-minute warning sound"><i></i></button></div>
+        <div class="srow" id="fxVibRow"><svg class="i"><use href="#i-phone"/></svg><span>Vibration<small class="muted" id="fxVibNote">Short buzzes for the warning and the finish</small></span><button id="fxVib" type="button" class="tog" role="switch" aria-checked="false" aria-label="Vibration"><i></i></button></div>
+        <div class="srow"><svg class="i"><use href="#i-play"/></svg><span>Reduce effect motion<small class="muted" id="fxRedNote">Replaces the rocket and particles with a calm still screen</small></span><button id="fxRed" type="button" class="tog" role="switch" aria-checked="false" aria-label="Reduce effect motion"><i></i></button></div>
+        <div class="srow"><svg class="i"><use href="#i-timer"/></svg><span>Floating stopwatch &amp; clock<small class="muted">Show the draggable stopwatch icon on every screen</small></span><button id="swShow" type="button" class="tog" role="switch" aria-checked="true" aria-label="Floating stopwatch and clock"><i></i></button></div>
+        <button class="srow" type="button" id="fxDemo"><svg class="i"><use href="#i-play"/></svg><span>Preview the full celebration<small class="muted">Does not complete or change any event</small></span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <p class="hint" id="fxState" role="status"></p>
+        <p class="hint">Custom sounds and vibration only work while ChronoPulse is open and on screen, after you have tapped the page once (browsers block sound until then). When the app is closed or the phone is locked, only your phone's own notification sound or a calendar alarm can alert you.</p>
+      </div>
+      <div class="glass card sgroup" id="stkCard">
+        <h3>Streaks</h3>
+        <div class="srow"><svg class="i"><use href="#i-target"/></svg><span><label for="stkGoal">Daily goal</label><small class="muted">A day counts towards your streak when you finish at least this many activities: habit check-ins, tasks and focus sessions</small><select id="stkGoal" class="in"></select></span></div>
+        <div class="srow"><svg class="i"><use href="#i-target"/></svg><span><label for="stkFreeze">Streak freezes per month</label><small class="muted">A missed day is covered automatically while a freeze is left that month, so your streak is not reset. Freezes never add days to the count.</small><select id="stkFreeze" class="in"><option value="3">3 (default)</option><option value="2">2</option><option value="1">1</option><option value="0">0 (off)</option></select></span></div>
+        <button class="srow" type="button" id="stkOpen"><svg class="i"><use href="#i-cal"/></svg><span>Open streak calendar<small class="muted" id="stkSetNote"></small></span><svg class="i chev"><use href="#i-right"/></svg></button>
+      </div>
+      <div class="glass card sgroup">
+        <h3>Data &amp; privacy</h3>
+        <button class="srow" data-tab="data"><svg class="i"><use href="#i-save"/></svg><span>Backup, restore &amp; CSV export</span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <button class="srow dng" id="resetBtn"><svg class="i"><use href="#i-trash"/></svg><span>Reset all data</span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <p class="hint">Everything is stored only in this browser (localStorage). Nothing is uploaded.</p>
+      </div>
+      <div class="glass card sgroup">
+        <h3>Notifications</h3>
+        <div class="srow"><svg class="i"><use href="#i-bell"/></svg><span>Notifications (focus, tasks &amp; events)<small class="muted" id="nNote"></small></span><button id="nTog" type="button" class="tog" role="switch" aria-checked="false" aria-label="Notifications"><i></i></button></div>
+        <p class="hint bg-note" id="bgNote"></p>
+        <div class="srow"><svg class="i"><use href="#i-bell"/></svg><span>Hide event names in notifications<small class="muted">Shows a generic message so nothing private appears on a locked screen</small></span><button id="nHide" type="button" class="tog" role="switch" aria-checked="false" aria-label="Hide event names in notifications"><i></i></button></div>
+        <button class="srow" type="button" id="nTest"><svg class="i"><use href="#i-bell"/></svg><span>Send a test notification<small class="muted">Checks that your browser accepts notifications</small></span><svg class="i chev"><use href="#i-right"/></svg></button>
+        <div class="srow"><svg class="i"><use href="#i-bell"/></svg><span><label for="nsSound">Alert sound</label><select id="nsSound" class="in"><option value="system">Default system sound</option><option value="chime">Chime</option><option value="custom">Custom sound (your file)</option></select></span><button type="button" class="btn sm ghost" id="nsPrev" aria-label="Preview alert sound">Preview</button></div>
+        <div class="srow" id="nsCustomRow"><svg class="i"><use href="#i-play"/></svg><span>Custom sound file<small class="muted" id="nsName">No file chosen · .mp3 or .wav, up to 1 MB and 30 s</small></span><input type="file" id="nsFile" accept=".mp3,.wav,audio/mpeg,audio/wav,audio/x-wav" hidden><button type="button" class="btn sm ghost" id="nsPick">Choose file…</button><button type="button" class="btn sm ghost" id="nsRemove" hidden>Remove</button></div>
+        <p class="hint" id="nsNote" role="status" aria-live="polite"></p>
+        <p class="hint">A reminder sound plays only while ChronoPulse is open on screen. When the app is closed, in the background or the phone is locked, your phone's own notification sound is used, because a web app cannot change it. Your file stays on this device and is never uploaded.</p>
+        <p class="hint">Notifications are optional. ChronoPulse has no server, so it can only alert you while it is running: open on screen (a message inside the app) or in the background (a system notification, if your device keeps the app alive). It cannot wake a closed app, and delivery is never guaranteed: your browser, battery saver or phone settings can delay or block it. For event alarms that must work while the app is closed, use the calendar button on an event to add alarms to your phone's calendar app.</p>
+      </div>
+      <div class="glass card sgroup">
+        <h3>App &amp; offline</h3>
+        <div id="pwaBox"></div>
+        <div class="btns3"><button class="btn sm" type="button" id="installBtn" hidden><svg class="i"><use href="#i-phone"/></svg>Install app</button><button class="btn sm" type="button" id="updateBtn" hidden>Update now</button><button class="btn sm ghost" type="button" id="checkUpdBtn" hidden>Check for updates</button></div>
+      </div>
+    </section>
+    <footer>Runs 100% in your browser. Your data never leaves this device.</footer>
+  </div>
+
+  <nav class="bnav" aria-label="Primary">
+    <button data-tab="countdown" class="on"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button>
+    <button data-tab="focus"><svg class="i"><use href="#i-timer"/></svg><span>Focus</span></button>
+    <button data-tab="profile"><svg class="i"><use href="#i-user"/></svg><span>Profile</span></button>
+    <button data-tab="habits"><svg class="i"><use href="#i-habit"/></svg><span>Habits</span></button>
+    <button data-tab="life"><svg class="i"><use href="#i-chart"/></svg><span>Life</span></button>
+    <button data-tab="more"><svg class="i"><use href="#i-more"/></svg><span>More</span></button>
+  </nav>
+</div>
+
+<dialog id="onbDlg"><form id="onbForm" class="sheet onb" autocomplete="off" novalidate>
+  <span class="logo big"><svg class="i"><use href="#i-clock"/></svg></span>
+  <div><h3>Welcome to ChronoPulse <em>4.1</em></h3><p class="muted">Plan your time, build better habits and achieve your dreams. Tell us who you are to unlock your age engine and personal timeline.</p></div>
+  <label>Username<input class="in" id="oName" maxlength="40" placeholder="Choose a username" autocomplete="off"></label>
+  <label>Date of birth<input class="in" id="oDob" type="date" min="1900-01-01"></label>
+  <p class="hint err" id="oErr" role="alert" hidden></p>
+  <button class="btn" type="submit">Get Started<svg class="i"><use href="#i-right"/></svg></button>
+  <p class="hint">Stored only in this browser. Nothing is uploaded.</p>
+</form></dialog>
+
+<dialog id="profileDlg"><form id="profileForm" class="sheet" autocomplete="off" novalidate>
+  <div class="card-head"><h3>Edit profile</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label>Username<input class="in" id="pName" maxlength="40"></label>
+  <label>Date of birth<input class="in" id="pDob" type="date" min="1900-01-01"></label>
+  <p class="hint err" id="pErr" role="alert" hidden></p>
+  <div class="btns"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" type="submit">Save profile</button></div>
+</form></dialog>
+
+<dialog id="eventDlg"><form id="eventForm" class="sheet" autocomplete="off" novalidate>
+  <div class="card-head"><h3 id="eTitleH">Add personal event</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label>Event name<input class="in" id="eTitle" maxlength="60" placeholder="e.g. Wedding, Exam, Vacation"></label>
+  <div class="row2">
+    <label>Event date<input class="in" id="eDate" type="date" min="1900-01-01"></label>
+    <label>Time (optional)<input class="in" id="eTime" type="time"></label>
+  </div>
+  <label>Category (optional)<input class="in" id="eCat" maxlength="30" list="evCatList" placeholder="e.g. Work, Study, Personal, Health"><datalist id="evCatList"><option value="Work"><option value="Study"><option value="Personal"><option value="Health"></datalist></label>
+  <label>Description (optional)<textarea class="in" id="eDesc" rows="2" maxlength="240" placeholder="Add notes…"></textarea></label>
+  <fieldset class="remset" id="eRem"><legend>Reminders</legend>
+    <label class="chk"><input type="checkbox" data-rem="d1"><span>24 hours before</span></label>
+    <label class="chk"><input type="checkbox" data-rem="h1"><span>1 hour before</span></label>
+    <label class="chk"><input type="checkbox" data-rem="m10"><span>10 minutes before</span></label>
+    <label class="chk"><input type="checkbox" data-rem="m1"><span>1 minute before</span></label>
+    <label class="chk"><input type="checkbox" data-rem="end"><span>At completion</span></label>
+    <p class="hint" id="eRemNote" aria-live="polite"></p>
+  </fieldset>
+  <label class="chk" id="eUseWrap"><input type="checkbox" id="eUse"><span>Use as my countdown target</span></label>
+  <p class="hint err" id="eErr" role="alert" hidden></p>
+  <div class="btns"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" type="submit" id="eSave">Save event</button></div>
+</form></dialog>
+
+<dialog id="goalDlg"><form id="goalForm" class="sheet" autocomplete="off" novalidate>
+  <div class="card-head"><h3 id="gHead">Create new goal</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label>Goal name<input class="in" id="gTitle" maxlength="60" placeholder="e.g. Fitness, Study, Career"></label>
+  <div class="row2">
+    <label>Category (optional)<input class="in" id="gCat" maxlength="30" list="catList" placeholder="Choose or type"></label>
+    <label>Target date (optional)<input class="in" id="gTarget" type="date" min="1900-01-01"></label>
+  </div>
+  <datalist id="catList"><option value="Fitness"><option value="Health"><option value="Study"><option value="Career"><option value="Personal"><option value="Finance"></datalist>
+  <label>Description (optional)<textarea class="in" id="gDesc" rows="2" maxlength="240" placeholder="Add a short description…"></textarea></label>
+  <div class="field"><div class="card-head"><span>Subtasks</span><button type="button" class="btn sm ghost" id="addRow"><svg class="i"><use href="#i-plus"/></svg>Add Task</button></div><div id="gTasks"></div></div>
+  <p class="hint err" id="gErr" role="alert" hidden></p>
+  <div class="btns"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" type="submit">Save goal</button></div>
+</form></dialog>
+
+<dialog id="calDlg"><div class="sheet">
+  <div class="card-head"><h3 id="calTitle"></h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="cal-stats"><div><small>Current streak</small><b id="calCur">0</b></div><div><small>Longest streak</small><b id="calBest">0</b></div><div><small>Check-ins</small><b id="calTot">0</b></div></div>
+  <div class="cal-nav"><button class="ico" id="calPrev" aria-label="Previous month"><svg class="i"><use href="#i-left"/></svg></button><b id="calMonth" aria-live="polite"></b><button class="ico" id="calNext" aria-label="Next month"><svg class="i"><use href="#i-right"/></svg></button></div>
+  <div class="cal" id="calGrid" role="grid"></div>
+  <ul class="legend"><li><i class="lg hit"></i>Completed</li><li><i class="lg miss"></i>Missed</li><li><i class="lg tod"></i>Today</li></ul>
+  <p class="hint">Tap a day to add or remove a check-in.</p>
+</div></dialog>
+
+<dialog id="shareDlg"><div class="sheet wide">
+  <div class="card-head"><div><h3>Share your moment</h3><p class="muted">A summary card drawn on your device — works offline</p></div><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <p class="muted" id="shotNote" role="status"></p>
+  <img id="shotImg" alt="Screenshot preview">
+  <div class="share-grid">
+    <button class="sh wa" id="shWa">Share via WhatsApp</button>
+    <button class="sh nat" id="shNat">Share…</button>
+    <button class="sh fb" id="shFb">Facebook</button>
+    <button class="sh ig" id="shIg">Instagram</button>
+    <button class="sh dl" id="shDl"><svg class="i"><use href="#i-down"/></svg>Download image</button>
+  </div>
+</div></dialog>
+
+<dialog id="confirmDlg"><form method="dialog" class="sheet" id="confirmForm">
+  <h3 id="cfTitle">Are you sure?</h3><p class="muted" id="cfText"></p>
+  <div class="btns"><button value="no" class="btn ghost">Cancel</button><button value="yes" class="btn danger" id="cfYes">Confirm</button></div>
+</form></dialog>
+
+<dialog id="todoDlg"><form id="todoForm" class="sheet" autocomplete="off" novalidate>
+  <div class="card-head"><h3 id="tHead">Add task</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label>Task<input class="in" id="tTitle" maxlength="80" placeholder="e.g. Submit assignment"></label>
+  <label>Notes (optional)<textarea class="in" id="tDesc" rows="2" maxlength="240" placeholder="Add notes…"></textarea></label>
+  <div class="row2"><label>Due date (optional)<input class="in" id="tDue" type="date" min="1900-01-01"></label><label>Reminder (optional)<input class="in" id="tRemind" type="datetime-local"></label></div>
+  <label>Linked habit (optional)<select class="in" id="tHabit"></select></label>
+  <p class="hint" id="tHabitHint">Completing a linked task also checks that habit in for the day (once). Undoing the task removes only the check-in it created.</p>
+  <p class="hint err" id="tErr" role="alert" hidden></p>
+  <div class="btns"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" type="submit">Save task</button></div>
+</form></dialog>
+
+<dialog id="cfgDlg"><form id="cfgForm" class="sheet" autocomplete="off" novalidate>
+  <div class="card-head"><h3>Timer settings</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="row2"><label>Focus (minutes)<input class="in" id="cFocus" type="number" inputmode="numeric" min="1" max="180"></label><label>Short break (min)<input class="in" id="cShort" type="number" inputmode="numeric" min="1" max="60"></label></div>
+  <div class="row2"><label>Long break (min)<input class="in" id="cLong" type="number" inputmode="numeric" min="1" max="120"></label><label>Focus sessions before a long break<input class="in" id="cEvery" type="number" inputmode="numeric" min="2" max="12"></label></div>
+  <label class="chk"><input type="checkbox" id="cAuto"><span>Start the next session automatically</span></label>
+  <label class="chk"><input type="checkbox" id="cChime"><span>Play a chime when a session ends</span></label>
+  <label class="chk"><input type="checkbox" id="cBreak"><span>Remind me when a break is over</span></label>
+  <p class="hint">Changes apply to the next session; a session already running keeps its length.</p>
+  <p class="hint err" id="cErr" role="alert" hidden></p>
+  <div class="btns"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" type="submit">Save settings</button></div>
+</form></dialog>
+
+<dialog id="restoreDlg"><form id="restoreForm" class="sheet" autocomplete="off" novalidate>
+  <div class="card-head"><h3>Restore backup</h3><button type="button" class="ico" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <p class="muted" id="rMeta"></p>
+  <ul class="rsum" id="rSummary"></ul>
+  <fieldset class="modes"><legend>How should it be applied?</legend>
+    <label class="chk"><input type="radio" name="rMode" value="merge" checked><span><b>Merge</b> — keep what is on this device and add what is missing from the file</span></label>
+    <label class="chk"><input type="radio" name="rMode" value="replace"><span><b>Replace</b> — make this device match the file exactly</span></label></fieldset>
+  <p class="hint" id="rWarn"></p>
+  <p class="hint err" id="rErr" role="alert" hidden></p>
+  <div class="btns"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn" type="submit" id="rGo">Restore</button></div>
+</form></dialog>
+
+<div id="cineTen" class="cine-ten" hidden aria-hidden="true"><b id="cineTenN">10</b><span>seconds</span></div>
+<div id="cineSr" class="sr-only" role="status" aria-live="polite"></div>
+
+<dialog id="cineDlg" class="cine" aria-labelledby="cineTitle" aria-describedby="cineSub">
+  <div class="cine-wrap">
+    <canvas id="cineCv" aria-hidden="true"></canvas>
+    <div class="cine-msg">
+      <p class="cine-kicker">Countdown complete</p>
+      <h2 id="cineTitle"></h2>
+      <p id="cineSub"></p>
+      <p class="hint" id="cineNote" role="status"></p>
+    </div>
+    <div class="cine-bar">
+      <button type="button" class="btn sm ghost" id="cineReplay">Replay</button>
+      <button type="button" class="btn sm ghost" id="cineMute" aria-pressed="false">Mute</button>
+      <button type="button" class="btn sm ghost" id="cineRm" aria-pressed="false">Reduce motion</button>
+      <button type="button" class="btn sm" id="cineClose" autofocus>Close</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="streakDlg" aria-labelledby="stkTitle"><div class="sheet streak">
+  <div class="card-head"><h3 class="sr-only">Streak calendar</h3><button type="button" class="ico" data-close aria-label="Close" id="stkClose"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="stk-hero">
+    <div class="stk-orbit" id="stkOrbit"><canvas id="stkOrbitCv" aria-hidden="true"></canvas><div class="stk-flame" id="stkFlame" data-state="cold"><span class="flame-wrap" aria-hidden="true"></span><b id="stkNum">0</b></div></div>
+    <p class="stk-orbit-note hint" id="stkOrbitNote" aria-live="polite"></p>
+    <h3 id="stkTitle">Streak days</h3>
+    <p class="stk-msg" id="stkMsg"></p>
+    <div class="track" aria-hidden="true"><i id="stkBar"></i></div>
+  </div>
+  <div class="stk-shields" id="stkShields"><div class="shield-row" id="stkShieldRow" role="img"></div><p class="hint" id="stkShieldNote"></p></div>
+  <div class="stk-cal">
+    <div class="stk-nav"><button type="button" class="ico" id="stkPrev" aria-label="Previous month"><svg class="i"><use href="#i-left"/></svg></button><b id="stkMonth" aria-live="polite"></b><button type="button" class="ico" id="stkNext" aria-label="Next month"><svg class="i"><use href="#i-right"/></svg></button></div>
+    <div class="stk-wd" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+    <div class="stk-grid" id="stkGrid" role="group" aria-label="Days of the month"></div>
+  </div>
+  <div class="stk-long"><div><b>Longest Streak</b><small id="stkRange"></small></div><div class="stk-laurel"><b id="stkLong">0</b><span id="stkLongU">Days</span></div></div>
+  <section class="badge-sec" aria-labelledby="stkBadgeH"><h4 id="stkBadgeH">Badges</h4><div class="badge-row" id="stkBadges"></div></section>
+  <section class="matrix-sec" aria-labelledby="stkMatH"><h4 id="stkMatH">Habit matrix · last 7 days</h4><div class="matrix" id="stkMatrix"></div></section>
+  <p class="hint" id="stkNote"></p>
+</div></dialog>
+
+<button id="swFab" class="sw-fab" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Stopwatch and clock. Drag to move, press to open."><svg viewBox="0 0 24 24" class="i" aria-hidden="true"><circle cx="12" cy="13.500" r="7.500"/><path d="M12 9.500v4l2.500 1.500M9.500 2.500h5M12 2.500V6M18.500 6.500l1.300-1.300"/></svg></button>
+<div id="swPanel" class="sw-panel glass" role="dialog" aria-label="Stopwatch and clock" hidden>
+  <div class="sw-head"><b>Stopwatch &amp; clock</b><button type="button" class="ico" id="swClose" aria-label="Close stopwatch panel"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="sw-clock">
+    <svg viewBox="0 0 100 100" class="sw-analog" role="img" aria-label="Analog clock showing the current time"><circle cx="50" cy="50" r="47" class="face"/><g class="ticks"><path d="M50 6v6M50 88v6M6 50h6M88 50h6"/></g><line id="swHH" x1="50" y1="50" x2="50" y2="27" class="hh"/><line id="swHM" x1="50" y1="50" x2="50" y2="16" class="hm"/><line id="swHS" x1="50" y1="56" x2="50" y2="12" class="hs"/><circle cx="50" cy="50" r="3" class="hub"/></svg>
+    <div><div class="sw-digital" id="swDigital" aria-hidden="true">00:00:00</div><div class="sw-date muted" id="swDate"></div></div>
+  </div>
+  <div class="sw-watch"><div class="sw-time" id="swTime" role="timer" aria-label="Stopwatch">00:00.00</div>
+    <div class="sw-btns"><button type="button" class="btn" id="swGo">Start</button><button type="button" class="btn ghost" id="swLap" disabled>Lap</button><button type="button" class="btn ghost" id="swReset" disabled>Reset</button></div>
+    <ol class="sw-laps" id="swLaps" hidden aria-label="Laps"></ol></div>
+  <div class="sw-opts"><div class="srow"><span>24-hour clock</span><button id="swH24" type="button" class="tog" role="switch" aria-checked="false" aria-label="24-hour clock"><i></i></button></div>
+  <div class="srow"><span>Drift around the screen<small class="muted" id="swRoamNote"></small></span><button id="swRoam" type="button" class="tog" role="switch" aria-checked="true" aria-label="Drift around the screen"><i></i></button></div></div>
+  <p class="sr-only" id="swSr" role="status" aria-live="polite"></p>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
