@@ -7,7 +7,7 @@
    - 4.2.5: background reminders. The page hands the SW a list of upcoming reminders (SCHEDULE); the SW stores it (IndexedDB), uses Notification Triggers where the browser has them,
      and otherwise delivers anything due whenever it wakes (Periodic Background Sync, push-less wake-ups, or the page). Never promised on browsers that cannot do it.
    - Only this 4.2 app's cache namespace (chronopulse-v4.2-*) is ever deleted. 4.1 caches (chronopulse-v4.1-*) and any other site/app cache are never touched. */
-const VERSION = '4.2.6';
+const VERSION = '4.2.7';
 const CACHE_PREFIX = 'chronopulse-v4.2-';
 const CACHE = CACHE_PREFIX + VERSION;
 const PRECACHE = ['index.html', 'style.css', 'themes.css', 'theme-boot.js', 'lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'streak-ui.js', 'orbit.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js', 'manifest.json', 'doomsday-tick.mp3', 'assets/chime.wav',
