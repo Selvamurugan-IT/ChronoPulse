@@ -3,7 +3,7 @@
 const test = require('node:test'), assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), { execFileSync } = require('node:child_process');
 const root = path.join(__dirname, '..'), read = f => fs.readFileSync(path.join(root, f), 'utf8'), exists = f => fs.existsSync(path.join(root, f));
-const JS = ['theme-boot.js', 'lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'orbit.js', 'streak-ui.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js', 'service-worker.js'];
+const JS = ['theme-boot.js', 'lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'lib/lib48.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'orbit.js', 'streak-ui.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js', 'service-worker.js'];
 const precache = () => eval(read('service-worker.js').match(/const PRECACHE = (\[[\s\S]*?\]);/)[1]);
 
 for (const f of JS) test(`syntax: node --check ${f}`, () => { execFileSync(process.execPath, ['--check', path.join(root, f)], { stdio: 'pipe' }); });
@@ -13,7 +13,7 @@ test('manifest.json is valid and its icons exist', () => {
 });
 test('index.html loads scripts in dependency order, with lib/lib42.js, lib/lib43.js and lib/lib44.js before script.js', () => {
   const order = [...read('index.html').matchAll(/<script defer src="([^"]+)"/g)].map(m => m[1]);
-  assert.deepEqual(order, ['lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'orbit.js', 'streak-ui.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js']);
+  assert.deepEqual(order, ['lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'lib/lib48.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'orbit.js', 'streak-ui.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js']);
 });
 test('every local file index.html references exists', () => {
   for (const m of read('index.html').matchAll(/(?:src|href)="([^"#:]+?)"/g)) if (!m[1].startsWith('data')) assert.ok(exists(m[1]), m[1]);
@@ -37,7 +37,7 @@ test('no listener or timer is registered more than once for the new reconcile ho
 });
 
 /* ---------- Phase 2 guards ---------- */
-const APP_JS = ['lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'orbit.js', 'streak-ui.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js'];
+const APP_JS = ['lib/lib.js', 'lib/lib41.js', 'lib/lib42.js', 'lib/lib43.js', 'lib/lib44.js', 'lib/lib45.js', 'lib/lib46.js', 'lib/lib47.js', 'lib/lib48.js', 'fx.js', 'sfx.js', 'script.js', 'focus-ui.js', 'reminders.js', 'cinema.js', 'notifsound.js', 'orbit.js', 'streak-ui.js', 'floaty.js', 'bgnotify.js', 'theme.js', 'insights-ui.js', 'pwa.js'];
 test('privacy: no app script can send data anywhere (no fetch / XHR / beacon / WebSocket / external scripts)', () => {
   for (const f of APP_JS) assert.ok(!/\b(fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|importScripts)\b/.test(read(f)), f);
   assert.ok(!/<script[^>]+src="https?:/i.test(read('index.html')), 'no external scripts'); assert.ok(!/<link[^>]+href="https?:/i.test(read('index.html')), 'no external stylesheets');

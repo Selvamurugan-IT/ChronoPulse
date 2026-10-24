@@ -1,6 +1,6 @@
 {
   "name": "chronopulse",
-  "version": "4.2.6",
+  "version": "4.2.8",
   "private": true,
   "description": "ChronoPulse 4.2 — offline-first countdown, focus, tasks and habits PWA (static site, no build step).",
   "scripts": {

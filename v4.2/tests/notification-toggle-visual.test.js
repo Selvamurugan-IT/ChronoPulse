@@ -16,7 +16,7 @@ test('ChronoPulse 4.2 title and package version are set', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
   assert.match(html, /<title>ChronoPulse 4\.2<\/title>/);
-  assert.equal(pkg.version, '4.2.6');
+  assert.equal(pkg.version, '4.2.8');
 });
 
 test('notification permission result is authoritative; a lagging Permissions API state cannot force the toggle off', () => {

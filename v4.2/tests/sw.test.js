@@ -17,19 +17,19 @@ function load(existing = [], wins = []) {
 }
 
 test('cache namespace is the 4.2 one and the current cache name is prefix + version', () => {
-  const { info } = load(); assert.equal(info.VERSION, '4.2.6'); assert.equal(info.CACHE_PREFIX, 'chronopulse-v4.2-'); assert.equal(info.CACHE, 'chronopulse-v4.2-4.2.6');
+  const { info } = load(); assert.equal(info.VERSION, '4.2.8'); assert.equal(info.CACHE_PREFIX, 'chronopulse-v4.2-'); assert.equal(info.CACHE, 'chronopulse-v4.2-4.2.8');
 });
 test('install precaches exactly the PRECACHE list into the current cache only', async () => {
   const t = load(['chronopulse-v4.1-4.1.0']); await t.fire('install');
   assert.deepEqual([...t.store.get(t.info.CACHE).keys()].sort(), [...t.info.PRECACHE].sort()); assert.equal(t.store.get('chronopulse-v4.1-4.1.0').size, 0, '4.1 cache untouched');
 });
 test('activate deletes only OLDER 4.2 caches — never 4.1 caches, other apps, or non-matching names', async () => {
-  const keep = ['chronopulse-v4.1-4.1.0', 'chronopulse-v4.1-4.1.1', 'chronopulse-v4.2-4.2.6', 'other-app-v1', 'workbox-precache-v2', 'chronopulse:v4.1', 'chronopulse-v4.20-x', 'my-chronopulse-v4.2-1'];
-  const t = load([...keep, 'chronopulse-v4.2-4.2.0', 'chronopulse-v4.2-4.2.1', 'chronopulse-v4.2-4.2.2', 'chronopulse-v4.2-4.2.3', 'chronopulse-v4.2-4.2.5', 'chronopulse-v4.2-4.0.0']); await t.fire('activate');
-  assert.deepEqual(t.deleted.sort(), ['chronopulse-v4.2-4.0.0', 'chronopulse-v4.2-4.2.0', 'chronopulse-v4.2-4.2.1', 'chronopulse-v4.2-4.2.2', 'chronopulse-v4.2-4.2.3', 'chronopulse-v4.2-4.2.5'], 'every older 4.2 cache is cleaned up');
+  const keep = ['chronopulse-v4.1-4.1.0', 'chronopulse-v4.1-4.1.1', 'chronopulse-v4.2-4.2.8', 'other-app-v1', 'workbox-precache-v2', 'chronopulse:v4.1', 'chronopulse-v4.20-x', 'my-chronopulse-v4.2-1'];
+  const t = load([...keep, 'chronopulse-v4.2-4.2.0', 'chronopulse-v4.2-4.2.1', 'chronopulse-v4.2-4.2.2', 'chronopulse-v4.2-4.2.3', 'chronopulse-v4.2-4.2.5', 'chronopulse-v4.2-4.2.6', 'chronopulse-v4.2-4.2.7', 'chronopulse-v4.2-4.0.0']); await t.fire('activate');
+  assert.deepEqual(t.deleted.sort(), ['chronopulse-v4.2-4.0.0', 'chronopulse-v4.2-4.2.0', 'chronopulse-v4.2-4.2.1', 'chronopulse-v4.2-4.2.2', 'chronopulse-v4.2-4.2.3', 'chronopulse-v4.2-4.2.5', 'chronopulse-v4.2-4.2.6', 'chronopulse-v4.2-4.2.7'], 'every older 4.2 cache is cleaned up');
   for (const k of keep) assert.ok(t.store.has(k), 'must survive: ' + k); assert.equal(t.claimed.n, 1);
 });
-test('activate with no old caches deletes nothing', async () => { const t = load(['chronopulse-v4.2-4.2.6']); await t.fire('activate'); assert.deepEqual(t.deleted, []); });
+test('activate with no old caches deletes nothing', async () => { const t = load(['chronopulse-v4.2-4.2.8']); await t.fire('activate'); assert.deepEqual(t.deleted, []); });
 test('service worker never writes to localStorage-style data keys or touches cross-origin requests', () => {
   assert.ok(!/localStorage/.test(src)); assert.ok([...src.matchAll(/indexedDB\.open\('([^']+)'/g)].every(m => m[1] === 'chronopulse-sw'), 'the worker only ever opens its own small IndexedDB (the reminder schedule), never the app data'); assert.ok(!/chronopulse:v4\.1/.test(src)); assert.ok(/url\.origin !== self\.location\.origin\) return/.test(src));
 });

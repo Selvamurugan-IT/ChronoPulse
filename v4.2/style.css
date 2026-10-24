@@ -569,3 +569,32 @@ html.cp-rm .sw-fab.running::after{animation:none}
 @media(prefers-reduced-motion:reduce){.sw-fab.running::after{animation:none}}
 
 .is-empty-charts .ins-data{display:none}
+
+/* ===== 4.2.8 PulseShift (inside the floating panel; colours only from theme variables, so all four themes work) ===== */
+.ps{margin-top:10px;border:1px solid var(--line);border-radius:16px;background:var(--inset2);overflow:hidden}
+.ps-toggle{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;min-height:48px;padding:8px 12px;cursor:pointer;color:var(--tx);font:600 .9rem var(--f)}
+.ps-toggle b{font-weight:800}.ps-toggle small{flex:1;min-width:0;font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ps-toggle:focus-visible{outline:2px solid var(--em2);outline-offset:-2px;border-radius:14px}
+.ps-chev{width:18px;height:18px;flex:none;color:var(--mu);transition:transform .2s}.ps-toggle[aria-expanded=true] .ps-chev{transform:rotate(90deg)}
+.ps-body{display:flex;flex-direction:column;gap:10px;padding:0 12px 12px}.ps-body[hidden]{display:none}
+.ps-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;padding:3px;border-radius:12px;border:1px solid var(--line);background:var(--input)}
+.ps-seg button{min-height:40px;padding:6px 4px;border:0;border-radius:9px;background:transparent;color:var(--mu);font:700 .76rem/1.15 var(--f);cursor:pointer;transition:background .2s,color .2s}
+.ps-seg button[aria-checked=true]{background:var(--grad);color:var(--on-em)}
+.ps-seg button:not([aria-checked=true]):hover{color:var(--tx)}
+.ps-base .in{min-height:44px;font-size:16px}
+.ps-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px}.ps-f[hidden]{display:none}
+.ps-f{gap:4px;font-size:.74rem}
+.ps-step{display:grid;grid-template-columns:34px minmax(0,1fr) 34px;align-items:stretch;border:1px solid var(--line);border-radius:12px;background:var(--input);overflow:hidden}
+.ps-step:focus-within{border-color:var(--em);box-shadow:0 0 0 3px var(--glow)}
+.ps-step .in{min-height:44px;padding:4px 2px;border:0;border-radius:0;background:transparent;text-align:center;font:700 16px var(--f);font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield;box-shadow:none}
+.ps-step .in::-webkit-outer-spin-button,.ps-step .in::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ps-b{border:0;background:var(--inset);color:var(--tx);font:700 1.1rem var(--f);cursor:pointer;min-height:44px}.ps-b:hover{color:var(--em2)}.ps-b:active{background:var(--line)}
+.ps-result{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:14px;background:var(--grad);color:var(--on-em);box-shadow:0 8px 22px -12px var(--em);overflow-wrap:anywhere}
+.ps-result small{font-size:.72rem;font-weight:700;letter-spacing:.02em;opacity:.85}
+.ps-result b{font-size:1.12rem;font-weight:800;line-height:1.25;font-variant-numeric:tabular-nums}
+.ps-sub{font-size:.8rem;font-weight:600;font-variant-numeric:tabular-nums;opacity:.9}
+.ps-result.bad{background:var(--inset);color:var(--tx);border:1px dashed var(--red);box-shadow:none}.ps-result.bad small{display:none}
+.ps-copy{width:100%}.ps-copy:disabled{opacity:.45;cursor:default}
+@media(max-width:380px){.ps-toggle small{display:none}.ps-seg button{font-size:.7rem}}
+@media(prefers-reduced-motion:reduce){.ps-chev,.ps-seg button{transition:none}}
+html.cp-rm .ps-chev,html.cp-rm .ps-seg button{transition:none}

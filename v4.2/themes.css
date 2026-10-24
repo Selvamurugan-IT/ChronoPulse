@@ -111,3 +111,14 @@ html.cp-rm .ring-fg,html.cp-rm .sbadge.on .medal{transition:none;animation:none}
 .sbadge.t9 .medal{background:radial-gradient(circle at 35% 30%,#ffe3cc,#f97316 62%,#f97316);--bg-glow:#f97316}
 .sbadge.t10 .medal{background:radial-gradient(circle at 35% 30%,#ffffff,#fde68a 62%,#fde68a);--bg-glow:#fde68a}
 .badge-row{flex-wrap:wrap}
+
+/* 4.2.8 PulseShift per-theme finishing (structure/colour already comes from the shared variables) */
+html[data-theme=oled] .ps{background:var(--inset2);border-color:#2a2a2a}
+html[data-theme=oled] .ps-result{box-shadow:none}
+html[data-theme=neon] .ps{border-color:rgba(0,229,255,.32);box-shadow:inset 0 0 18px -14px rgba(255,61,240,.8)}
+html[data-theme=neon] .ps-seg button[aria-checked=true],html[data-theme=neon] .ps-result{box-shadow:0 0 16px -4px rgba(0,229,255,.7)}
+html[data-theme=neon] .ps-result b{text-shadow:none}
+html[data-theme=pastel] .ps{box-shadow:0 4px 16px -12px rgba(120,80,160,.35)}
+html[data-theme=pastel] .ps-result{box-shadow:0 6px 16px -10px rgba(201,120,170,.7)}
+html[data-theme=pastel] .ps-seg button[aria-checked=true]{box-shadow:0 3px 8px -4px rgba(201,120,170,.8)}
+html[data-theme=neon] .ps-result.bad{box-shadow:none}

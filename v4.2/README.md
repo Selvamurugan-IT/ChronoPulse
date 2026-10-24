@@ -1,6 +1,11 @@
-# ChronoPulse 4.2.6
+# ChronoPulse 4.2.8
 
 An offline-first countdown, focus, task and habit progressive web app. Static site; no build step or server-side service is required.
+
+
+## 4.2.8: PulseShift
+
+Open the floating stopwatch icon, then expand **PulseShift** in the panel. Pick a mode (Date, Time or Date + Time), enter the starting point, choose **Before / Past (−)** or **After / Future (+)** (default), and set the offset with the steppers (Days; Hours/Minutes/Seconds; or Days/Hours/Minutes). The result updates on every change and **Copy Result** copies it. Maths is in `lib/lib48.js` (native local-time `Date`, so month ends, leap years and DST are handled; results must fall in years 1000-9999). Only the mode, direction and offsets are remembered (inside the existing `chronopulse:widget` key); nothing is sent anywhere.
 
 ## Project layout
 
@@ -37,7 +42,7 @@ Browser end-to-end tests are in `e2e/` and require Playwright plus its supported
 2. In GitHub, open **Settings → Pages**.
 3. Choose **Deploy from a branch**, select the branch (usually `main`) and folder `/ (root)`.
 4. Wait for deployment, open the HTTPS URL, then test notification permission, the switch state, offline launch and sound.
-5. If an older version is cached on your device, close the app and reopen it after the new service worker activates. The service-worker cache version is `4.2.6`.
+5. If an older version is cached on your device, close the app and reopen it after the new service worker activates. The service-worker cache version is `4.2.8`.
 
 ## Notifications
 

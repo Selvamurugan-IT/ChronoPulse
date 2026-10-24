@@ -25,6 +25,7 @@
 <script defer src="lib/lib45.js"></script>
 <script defer src="lib/lib46.js"></script>
 <script defer src="lib/lib47.js"></script>
+<script defer src="lib/lib48.js"></script>
 <script defer src="fx.js"></script>
 <script defer src="sfx.js"></script>
 <script defer src="script.js"></script>
@@ -546,6 +547,22 @@
   <div class="sw-watch"><div class="sw-time" id="swTime" role="timer" aria-label="Stopwatch">00:00.00</div>
     <div class="sw-btns"><button type="button" class="btn" id="swGo">Start</button><button type="button" class="btn ghost" id="swLap" disabled>Lap</button><button type="button" class="btn ghost" id="swReset" disabled>Reset</button></div>
     <ol class="sw-laps" id="swLaps" hidden aria-label="Laps"></ol></div>
+  <section class="ps" aria-labelledby="psTitle">
+    <button type="button" class="ps-toggle" id="psToggle" aria-expanded="false" aria-controls="psBody"><b id="psTitle">PulseShift</b><small class="muted">Add or subtract time</small><svg class="i ps-chev" aria-hidden="true"><use href="#i-right"/></svg></button>
+    <div class="ps-body" id="psBody" hidden>
+      <div class="ps-seg" id="psMode" role="radiogroup" aria-label="PulseShift mode"><button type="button" role="radio" aria-checked="true" data-mode="date">Date</button><button type="button" role="radio" aria-checked="false" data-mode="time">Time</button><button type="button" role="radio" aria-checked="false" data-mode="datetime">Date + Time</button></div>
+      <label class="ps-base" for="psBase"><span>Starting point</span><input id="psBase" class="in" type="date" autocomplete="off"></label>
+      <div class="ps-seg" id="psDir" role="radiogroup" aria-label="Direction"><button type="button" role="radio" aria-checked="false" data-dir="past">Before / Past (&minus;)</button><button type="button" role="radio" aria-checked="true" data-dir="future">After / Future (+)</button></div>
+      <div class="ps-fields" id="psFields">
+        <div class="ps-f" data-f="days"><label for="ps_days">Days</label><div class="ps-step"><button type="button" class="ps-b" data-step="-1" data-for="days" aria-label="Decrease days">&minus;</button><input id="ps_days" class="in" type="number" inputmode="numeric" min="0" max="999999" step="1" value="0" autocomplete="off"><button type="button" class="ps-b" data-step="1" data-for="days" aria-label="Increase days">+</button></div></div>
+        <div class="ps-f" data-f="hours"><label for="ps_hours">Hours</label><div class="ps-step"><button type="button" class="ps-b" data-step="-1" data-for="hours" aria-label="Decrease hours">&minus;</button><input id="ps_hours" class="in" type="number" inputmode="numeric" min="0" max="999999" step="1" value="0" autocomplete="off"><button type="button" class="ps-b" data-step="1" data-for="hours" aria-label="Increase hours">+</button></div></div>
+        <div class="ps-f" data-f="minutes"><label for="ps_minutes">Minutes</label><div class="ps-step"><button type="button" class="ps-b" data-step="-1" data-for="minutes" aria-label="Decrease minutes">&minus;</button><input id="ps_minutes" class="in" type="number" inputmode="numeric" min="0" max="999999" step="1" value="0" autocomplete="off"><button type="button" class="ps-b" data-step="1" data-for="minutes" aria-label="Increase minutes">+</button></div></div>
+        <div class="ps-f" data-f="seconds"><label for="ps_seconds">Seconds</label><div class="ps-step"><button type="button" class="ps-b" data-step="-1" data-for="seconds" aria-label="Decrease seconds">&minus;</button><input id="ps_seconds" class="in" type="number" inputmode="numeric" min="0" max="999999" step="1" value="0" autocomplete="off"><button type="button" class="ps-b" data-step="1" data-for="seconds" aria-label="Increase seconds">+</button></div></div>
+      </div>
+      <div class="ps-result" id="psResult" role="status" aria-live="polite" aria-atomic="true"><small id="psSummary">&nbsp;</small><b id="psMain">&mdash;</b><span id="psSub" class="ps-sub"></span></div>
+      <button type="button" class="btn ps-copy" id="psCopy" disabled>Copy Result</button>
+    </div>
+  </section>
   <div class="sw-opts"><div class="srow"><span>24-hour clock</span><button id="swH24" type="button" class="tog" role="switch" aria-checked="false" aria-label="24-hour clock"><i></i></button></div>
   <div class="srow"><span>Drift around the screen<small class="muted" id="swRoamNote"></small></span><button id="swRoam" type="button" class="tog" role="switch" aria-checked="true" aria-label="Drift around the screen"><i></i></button></div></div>
   <p class="sr-only" id="swSr" role="status" aria-live="polite"></p>

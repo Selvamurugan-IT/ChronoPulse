@@ -12,7 +12,7 @@ test('every element id streak-ui.js looks up exists in index.html', () => {
 test('offline: lib/lib44.js and streak-ui.js are loaded in order and precached; the cache name was bumped', () => {
   const order = [...html.matchAll(/<script defer src="([^"]+)"/g)].map(m => m[1]); assert.ok(order.indexOf('lib/lib44.js') > order.indexOf('lib/lib43.js') && order.indexOf('lib/lib44.js') < order.indexOf('script.js'));
   assert.ok(order.indexOf('streak-ui.js') > order.indexOf('cinema.js') && order.indexOf('streak-ui.js') < order.indexOf('pwa.js'), 'after focus-ui/cinema so the hooks it wraps already exist');
-  for (const f of ['lib/lib44.js', 'streak-ui.js']) { assert.ok(precache().includes(f), f); assert.ok(fs.existsSync(path.join(root, f))); } assert.ok(/VERSION = '4\.2\.6'/.test(sw));
+  for (const f of ['lib/lib44.js', 'streak-ui.js']) { assert.ok(precache().includes(f), f); assert.ok(fs.existsSync(path.join(root, f))); } assert.ok(/VERSION = '4\.2\.8'/.test(sw));
 });
 test('streak-ui.js stores nothing itself: no storage access, no network, no timers except the midnight roll-over', () => {
   assert.ok(!/localStorage|sessionStorage|indexedDB|STORE\b/.test(ui)); assert.ok(!/\b(fetch|XMLHttpRequest|sendBeacon|WebSocket|importScripts)\b/.test(ui)); assert.equal((ui.match(/setInterval\(/g) || []).length, 0);

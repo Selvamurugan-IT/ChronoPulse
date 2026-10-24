@@ -1,15 +1,16 @@
 'use strict';
 /* ChronoPulse 4.2.x — floating stopwatch + live clock. The icon glides slowly around the screen, can be dragged anywhere (and thrown), and opens a panel with a precision
-   stopwatch (start / pause / reset / laps) and a live analog + digital clock synced to the device clock. All maths is in lib/lib47.js (unit-tested).
+   stopwatch (start / pause / reset / laps) and a live analog + digital clock synced to the device clock. All maths is in lib/lib47.js (unit-tested). 4.2.8 adds PulseShift (lib/lib48.js): a date/time offset calculator inside the same panel.
    Preferences and the running stopwatch live in their own localStorage key (chronopulse:widget) as TIMESTAMPS, so a running stopwatch survives a reload and is never
    drifted by throttled timers. Nothing is sent anywhere; works offline. Roaming stops while the tab is hidden, while dragging, while the panel is open, and under reduced motion. */
 (function () {
-  const Q = CP47, KEY = 'chronopulse:widget', SIZE = 52;
+  const Q = CP47, PS = CP48, KEY = 'chronopulse:widget', SIZE = 52;
   const fab = $('#swFab'), panel = $('#swPanel'); if (!fab || !panel) return;
   const safe = f => { try { return f(); } catch (e) { return undefined; } };
   const osRm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let pref = { show: true, roam: true, h24: false, x: -1, y: -1, sw: Q.SW0() };
-  const load = () => { const r = safe(() => JSON.parse(localStorage.getItem(KEY) || 'null')); if (r && typeof r === 'object') { pref = { ...pref, show: r.show !== false, roam: r.roam !== false, h24: r.h24 === true, x: Number.isFinite(r.x) ? r.x : -1, y: Number.isFinite(r.y) ? r.y : -1 }; const s = r.sw; if (s && typeof s === 'object') pref.sw = { running: s.running === true, startedAt: +s.startedAt || 0, acc: Math.max(0, +s.acc || 0), laps: Array.isArray(s.laps) ? s.laps.filter(Number.isFinite).slice(0, Q.MAX_LAPS) : [] }; } };
+  let pref = { show: true, roam: true, h24: false, x: -1, y: -1, sw: Q.SW0(), ps: { open: false, mode: 'date', dir: 'future', off: {} } };
+  const loadPs = r => { const o = r && typeof r === 'object' ? r : {}; return { open: o.open === true, mode: PS.modeOf(o.mode), dir: PS.dirOf(o.dir), off: o.off && typeof o.off === 'object' ? { days: PS.clampN(o.off.days), hours: PS.clampN(o.off.hours), minutes: PS.clampN(o.off.minutes), seconds: PS.clampN(o.off.seconds) } : {} }; };
+  const load = () => { const r = safe(() => JSON.parse(localStorage.getItem(KEY) || 'null')); if (r && typeof r === 'object') { pref = { ...pref, show: r.show !== false, roam: r.roam !== false, h24: r.h24 === true, x: Number.isFinite(r.x) ? r.x : -1, y: Number.isFinite(r.y) ? r.y : -1, ps: loadPs(r.ps) }; const s = r.sw; if (s && typeof s === 'object') pref.sw = { running: s.running === true, startedAt: +s.startedAt || 0, acc: Math.max(0, +s.acc || 0), laps: Array.isArray(s.laps) ? s.laps.filter(Number.isFinite).slice(0, Q.MAX_LAPS) : [] }; } };
   const persist = () => safe(() => localStorage.setItem(KEY, JSON.stringify(pref)));
   load();
 
@@ -55,7 +56,7 @@
   }
   function toggle(force) {
     open = force === undefined ? !open : !!force; panel.hidden = !open; fab.setAttribute('aria-expanded', String(open)); stopRoam();
-    if (open) { placePanel(); draw(); tickUi(); $('#swClose').focus(); } else { cancelAnimationFrame(uiRaf); uiRaf = 0; kick(); fab.focus(); }
+    if (open) { placePanel(); draw(); psRender(!psTouched); placePanel(); tickUi(); $('#swClose').focus(); } else { cancelAnimationFrame(uiRaf); uiRaf = 0; kick(); fab.focus(); }
   }
   $('#swClose').addEventListener('click', () => toggle(false));
   document.addEventListener('keydown', e => { if (open && e.key === 'Escape' && !document.querySelector('dialog[open]')) { e.stopPropagation(); toggle(false); } }); /* works wherever focus is inside the panel, even on a button that just became disabled */
@@ -86,6 +87,40 @@
   el.rs.addEventListener('click', () => { pref.sw = Q.swReset(); persist(); draw(); say('Stopwatch reset'); });
   document.addEventListener('keydown', e => { if (!open || e.target.closest('input,select,textarea') || e.ctrlKey || e.metaKey || e.altKey) return; if (e.key === ' ' && !e.target.closest('button')) { e.preventDefault(); el.go.click(); } else if (e.key.toLowerCase() === 'l' && !el.lap.disabled) el.lap.click(); });
 
+  /* ---------- PulseShift: date / time / date+time offset calculator (maths in lib/lib48.js) ---------- */
+  const psEl = { toggle: $('#psToggle'), body: $('#psBody'), mode: $('#psMode'), dir: $('#psDir'), base: $('#psBase'), main: $('#psMain'), sub: $('#psSub'), sum: $('#psSummary'), copy: $('#psCopy'), res: $('#psResult') };
+  const psIn = { days: $('#ps_days'), hours: $('#ps_hours'), minutes: $('#ps_minutes'), seconds: $('#ps_seconds') };
+  let psResult = null, psTouched = false; /* psTouched: the person has typed their own starting point, so it is never overwritten with "now" */
+  const psOffsets = () => { const o = {}; for (const k of Object.keys(psIn)) o[k] = PS.clampN(psIn[k].value); return o; };
+  function psSetBase(fill) { const t = PS.inputType(pref.ps.mode); if (psEl.base.type !== t) psEl.base.type = t; if (fill) psEl.base.value = PS.nowValue(pref.ps.mode); psEl.base.step = pref.ps.mode === 'time' ? '1' : '60'; if (pref.ps.mode === 'date') psEl.base.removeAttribute('step'); }
+  function psCalc() {
+    const mode = pref.ps.mode, r = PS.shift({ mode, base: psEl.base.value, direction: pref.ps.dir, offsets: psOffsets() }); psResult = r.ok ? r : null;
+    if (r.ok) { setT(psEl.sum, r.summary); setT(psEl.main, r.main); setT(psEl.sub, r.sub); psEl.res.classList.remove('bad'); }
+    else { setT(psEl.sum, ' '); setT(psEl.main, r.reason === 'range' ? 'Out of range' : 'Pick a starting point'); setT(psEl.sub, r.reason === 'range' ? 'Results must fall between the years 1000 and 9999' : ''); psEl.res.classList.add('bad'); }
+    psEl.copy.disabled = !r.ok;
+  }
+  function psRender(fillBase) {
+    const { mode, dir } = pref.ps, fields = PS.fieldsOf(mode);
+    for (const b of psEl.mode.querySelectorAll('[data-mode]')) b.setAttribute('aria-checked', String(b.dataset.mode === mode));
+    for (const b of psEl.dir.querySelectorAll('[data-dir]')) b.setAttribute('aria-checked', String(b.dataset.dir === dir));
+    for (const k of Object.keys(psIn)) { const f = psIn[k].closest('.ps-f'); f.hidden = !fields.includes(k); psIn[k].value = String(pref.ps.off[k] || 0); }
+    const open = pref.ps.open; psEl.toggle.setAttribute('aria-expanded', String(open)); psEl.body.hidden = !open;
+    psSetBase(fillBase); psCalc();
+  }
+  function psSave() { for (const k of Object.keys(psIn)) pref.ps.off[k] = PS.clampN(psIn[k].value); persist(); }
+  psEl.toggle.addEventListener('click', () => { pref.ps.open = !pref.ps.open; persist(); psRender(pref.ps.open && !psTouched); if (open) placePanel(); });
+  psEl.mode.addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (!b || b.dataset.mode === pref.ps.mode) return; pref.ps.mode = PS.modeOf(b.dataset.mode); psTouched = false; psSave(); psRender(true); placePanel(); });
+  psEl.dir.addEventListener('click', e => { const b = e.target.closest('[data-dir]'); if (!b) return; pref.ps.dir = PS.dirOf(b.dataset.dir); psSave(); psRender(false); });
+  psEl.base.addEventListener('input', () => { psTouched = true; psCalc(); }); psEl.base.addEventListener('change', () => { psTouched = true; psCalc(); });
+  for (const k of Object.keys(psIn)) { const i = psIn[k]; i.addEventListener('input', () => { psCalc(); }); i.addEventListener('change', () => { i.value = String(PS.clampN(i.value)); psSave(); psCalc(); }); }
+  $('#psFields').addEventListener('click', e => { const b = e.target.closest('.ps-b'); if (!b) return; const i = psIn[b.dataset.for]; i.value = String(PS.clampN(PS.clampN(i.value) + (+b.dataset.step || 0))); psSave(); psCalc(); });
+  psEl.copy.addEventListener('click', async () => {
+    if (!psResult) return; const text = psResult.copy; let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (x) { ok = safe(() => { const t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.cssText = 'position:fixed;left:-9999px;top:0'; document.body.appendChild(t); t.select(); const r = document.execCommand('copy'); t.remove(); return r; }) === true; }
+    const msg = ok ? 'PulseShift result copied' : 'Could not copy — select the result and copy it manually'; say(msg); if (typeof toast === 'function') toast(msg);
+    if (ok) { psEl.copy.textContent = 'Copied ✓'; setTimeout(() => { psEl.copy.textContent = 'Copy Result'; }, 1500); }
+  });
+
   /* ---------- preferences ---------- */
   const tog = (id, on) => { const b = $(id); if (b) b.setAttribute('aria-checked', String(!!on)); };
   function renderPrefs() { tog('#swRoam', pref.roam && !osRm()); $('#swRoam').disabled = osRm(); tog('#swH24', pref.h24); tog('#swShow', pref.show); fab.hidden = !pref.show; setT($('#swRoamNote'), osRm() ? 'Your device asks for reduced motion, so the icon stays still' : 'Icon drifts around the screen until you touch it'); }
@@ -94,6 +129,6 @@
   $('#swShow').addEventListener('click', () => { pref.show = !pref.show; persist(); if (!pref.show) { toggle(false); stopRoam(); } else kick(); renderPrefs(); });
   /* the settings page toggle is re-rendered by the app's own settings render hook */
   const prevSet = X.onSettings; X.onSettings = () => { if (prevSet) prevSet(); renderPrefs(); };
-  addEventListener('storage', e => { if (e.key === KEY) { load(); draw(); } });
-  init(); drawSw(); renderPrefs(); kick(); X.floaty = { toggle, state: () => ({ ...pref, open, pos: { ...p } }) };
+  addEventListener('storage', e => { if (e.key === KEY) { load(); draw(); psRender(false); } });
+  init(); drawSw(); renderPrefs(); psRender(true); kick(); X.floaty = { toggle, state: () => ({ ...pref, open, pos: { ...p } }) };
 })();
